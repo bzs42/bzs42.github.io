@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <style>
-    .page {
+    body {
         margin: 0px;
         padding: 0px;
         background-color: black;
+        font-size: 20px;
     }
 
     .header {
@@ -17,14 +18,9 @@
         color: black;
         background-color: white;
         text-align: right;
-    }
-
-    .content {
-        margin-left: 25%;
-        margin-right: 25%;
-        border: 10px solid white;
-        background-color: white;
-        padding: 0px;
+        border: solid white;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
     }
 
     .emblem {
@@ -37,12 +33,61 @@
         margin-right: 0;
     }
 
+    .content {
+        margin-left: 25%;
+
+        padding: 0px;
+    }
+
+    .leftCell {
+        width: 75%;
+        float: left;
+    }
+
+    .rightCell {
+        width: 25%;
+        float: right;
+    }
+
+    .top,
+    .middle,
+    .bottom {
+        border: solid white;
+        background-color: white;
+    }
+
+    .top {
+        border-width: 20px 20px 10px 20px;
+        border-radius: 20px 20px 0px 0px;
+    }
+
+    .middle {
+        border-width: 10px 20px 10px 20px;
+        border-radius: 0px;
+    }
+
+    .bottom {
+        border-width: 10px 20px 20px 10px;
+        border-radius: 0px 0px 20px 20px;
+    }
+
     img {
-        margin-bottom: 10px;
+        border: solid white;
+        border-radius: 20px;
+        width: 100%;
+    }
+
+    .label {
+        background-color: white;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        margin-top: 100px;
+        padding: 20px 20px 20px 0px;
+        display: inline-block;
     }
 </style>
 
-<body class="page">
+<body>
 
     <div class="header">
         <div class="emblem">bzs</div>
@@ -50,9 +95,32 @@
     </div>
 
     <div class="content">
-        <img src="20211108_200610.jpg" width="100%" />
-        <img src="IMG-20210711-WA0001.jpg" width="100%" />
-        <img src="20190905_211239.jpg" width="100%" />
+        <div>
+            <div class="leftCell">
+                <div class="top"><img src="20211108_200610.jpg" /></div>
+            </div>
+            <div class="rightCell">
+                <div class="label">ancient cube</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="leftCell">
+                <div class="middle"><img src="IMG-20210711-WA0001.jpg" /></div>
+            </div>
+            <div class="rightCell">
+                <!--<div class="label"></div>-->
+            </div>
+        </div>
+
+        <div class="lastRow">
+            <div class="leftCell">
+                <div class="bottom"><img src="20190905_211239.jpg" /></div>
+            </div>
+            <div class="rightCell">
+                <!--<div class="label"></div>-->
+            </div>
+        </div>
     </div>
 </body>
 
