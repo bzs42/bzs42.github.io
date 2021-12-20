@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<style>
+    * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+    html {
+        scroll-snap-type: y mandatory;
+    }
+    body {
+        color: white;
+        background-color: black;
+        font-size: 20px;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .row {
+        justify-content: center;
+        display: flex;
+        margin-bottom: 10px;
+        scroll-snap-align: start; /* Stop at the top */
+    }
+
+    @media (orientation: landscape) {
+        .row {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .pic {
+            height: 100vh;
+        }
+
+        img {
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .label {
+            margin-left: 10px;
+        }
+    }
+
+    @media (orientation: portrait) {
+        .row {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pic {
+            width: 98vw;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .label {
+            margin-bottom: 10px;
+        }
+    }
+
+    /* permalinks */
+
+    a {
+        text-decoration: none;
+        transition-duration: 0.3s;
+    }
+
+    h1:hover>.plink,
+    p:hover>.plink {
+        opacity: 1
+    }
+
+    a.plink {
+        opacity: 0;
+        padding-left: 8px;
+        font-size: 0.8em;
+        font-weight: 600;
+        transition: opacity 180ms ease-in-out;
+    }
+
+    a.plink::before {
+        content: '\00B6'
+    }
+
+    /* div {
+        border: 1px solid red;
+    } */
+</style>
+
+<body>
+
+    <div class="content">
+
+        <div class="row">
+                <h1><a href="index.html">BZS</a>::Blog</h1>
+        </div>
+
+
+        <div class="row">
+            <a name="plinprogress"></a>
+            <div class="pic">
+                <img src="Thumbs\2021-12-Tina.png" />
+            </div>
+            <div class="label">
+                <h1>in progress...<a class="plink" href="#plinprogress" title="Direct link to this"></a></h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <a name="plinprogress"></a>
+            <div class="pic">
+                <img src="Thumbs\2021-12-Maria.png" />
+            </div>
+            <div class="label">
+                <h1>in progress...<a class="plink" href="#plinprogress" title="Direct link to this"></a></h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <a name="pl4"></a>
+            <div class="pic">
+                <img src="Thumbs\2021-11-Kosmo.png" />
+            </div>
+            <div class="label">
+                <h1>ancient cube<a class="plink" href="#pl4" title="Direct link to this"></a></h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <a name="pl2" />
+            <div class="pic">
+                <img src="Thumbs\2021-07-Dineis.png" />
+            </div>
+            <div class="label">
+                <h1>2021<a class="plink" href="#pl2" title="Direct link to this"></a></h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <a name="pl1" />
+            <div class="pic">
+                <img src="Thumbs\2019-Frida.png" />
+            </div>
+            <div class="label">
+                <h1>2019<a class="plink" href="#pl1" title="Direct link to this"></a></h1>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

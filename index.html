@@ -1,132 +1,98 @@
 <!DOCTYPE html>
 <html>
 <style>
+    html,
     body {
-        margin: 0px;
+        height: 100%
+    }
+
+    * {
         padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+
+    body {
+        color: white;
         background-color: black;
         font-size: 20px;
     }
 
-    .header {
-        position: fixed;
-        top: 20%;
-        left: 0px;
-        width: 25%;
-        margin: 0px;
-        padding: 0px;
-        color: black;
-        background-color: white;
-        text-align: right;
-        border: solid white;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
-
     .emblem {
-        text-orientation: upright;
-        writing-mode: vertical-rl;
-        text-transform: uppercase;
         font-size: 64pt;
         font-weight: bolder;
-        margin-left: auto;
-        margin-right: 0;
     }
 
-    .content {
-        margin-left: 25%;
-        padding: 0px;
+    @media (orientation: landscape) {
+
+        .content {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100%;
+        }
+
+        img {
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .nav {
+            text-align: right;
+        }
+
+        .pic {
+            height: 100%;
+        }
     }
 
-    .leftCell {
-        width: 75%;
-        float: left;
+    @media (orientation: portrait) {
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .pic {
+            width: 100%;
+        }
     }
 
-    .rightCell {
-        width: 25%;
-        float: right;
+    .nav {
+        margin-right: 10px;
+        font-size: 32px;
     }
 
-    .row {
-        clear: both;
-    }
-
-    .top,
-    .middle,
-    .bottom {
-        border: solid white;
-        background-color: white;
-    }
-
-    .top {
-        border-width: 20px 20px 10px 20px;
-        border-radius: 20px 20px 0px 0px;
-    }
-
-    .middle {
-        border-width: 10px 20px 10px 20px;
-        border-radius: 0px;
-    }
-
-    .bottom {
-        border-width: 10px 20px 20px 10px;
-        border-radius: 0px 0px 20px 20px;
-    }
-
-    img {
-        border: solid white;
-        border-radius: 20px;
-        width: 100%;
-    }
-
-    .label {
-        background-color: white;
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-        margin-top: 100px;
-        padding: 20px 20px 20px 0px;
-        display: inline-block;
-    }
-
-    a {
-        text-decoration: none;
-        transition-duration: 0.3s;
-    }
-
-    /* permalinks */
-
-    h1:hover > .plink,
-    p:hover > .plink {
-        opacity: 1
-    }
-
-    a.plink {
-        opacity: 0;
-        padding-left: 8px;
-        font-size: 0.8em;
-        font-weight: 600;
-        transition: opacity 180ms ease-in-out;
-    }
-
-    a.plink::before {
-        content: '\00B6'
-    }
 </style>
 
 <body>
 
-    <div class="header">
-        <div class="emblem">bzs</div>
-        <p>bezetes42@gmail.com</p>
+    <div class="content">
+        <div class="nav">
+            <div class="emblem">BZS42</div>
+            <p>bezetes@gmail.com</p>
+            <div><a href="Blog.html">::Blog</a></div>
+        </div>
+        <div class="pic">
+            <img src="Thumbs\2021-12-Tina.png">
+        </div>
     </div>
 
+    <!--
     <div class="content">
 
         <div class="row">
             <a name="plinprogress"></a>
             <div class="leftCell">
-                <div class="top"><img src="Thumbs\20211122_192633.png" /></div>
+                <div class="top"><img src="Thumbs\2021-12-Tina.png" /></div>
             </div>
             <div class="rightCell">
                 <div class="label">
@@ -136,9 +102,21 @@
         </div>
 
         <div class="row">
+            <a name="plinprogress"></a>
             <div class="leftCell">
-                <a name="pl4"></a>
-                <div class="middle"><img src="Thumbs\20211108_200610.png" /></div>
+                <div class="middle"><img src="Thumbs\2021-12-Maria.png" /></div>
+            </div>
+            <div class="rightCell">
+                <div class="label">
+                    <h1>in progress...<a class="plink" href="#plinprogress" title="Direct link to this"></a></h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <a name="pl4"></a>
+            <div class="leftCell">
+                <div class="middle"><img src="Thumbs\2021-11-Kosmo.png" /></div>
             </div>
             <div class="rightCell">
                 <div class="label">
@@ -148,23 +126,24 @@
         </div>
 
         <div class="row">
+            <a name="pl2" />
             <div class="leftCell">
-                <div class="middle"><img src="Thumbs\IMG-20210711-WA0001.jpg" /></div>
+                <div class="middle"><img src="Thumbs\2021-07-Dineis.png" /></div>
             </div>
             <div class="rightCell">
-                <!--<div class="label"></div>-->
             </div>
         </div>
 
         <div class="row">
+            <a name="pl1" />
             <div class="leftCell">
-                <div class="bottom"><img src="Thumbs\20190905_211239.png" /></div>
+                <div class="bottom"><img src="Thumbs\2019-Frida.png" /></div>
             </div>
             <div class="rightCell">
-                <!--<div class="label"></div>-->
             </div>
         </div>
     </div>
+-->
 </body>
 
 </html>
