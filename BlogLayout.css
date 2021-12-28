@@ -16,10 +16,11 @@ html {
 }
 
 .row {
-    justify-content: center;
     display: flex;
-    margin-bottom: 10px;
+    justify-content: center;
     scroll-snap-align: start;
+
+    margin-bottom: 10px;
 }
 
 @media (orientation: landscape) {
@@ -32,7 +33,7 @@ html {
         height: 100vh;
     }
 
-    img {
+    .pic img {
         height: 100%;
     }
 
@@ -48,14 +49,15 @@ html {
     }
 
     .pic {
-        width: 98vw;
+        width: 96vw;
     }
 
-    img {
+    .pic img {
         width: 100%;
     }
 
     .label {
+        margin-top: 5px;
         margin-bottom: 10px;
     }
 }

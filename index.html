@@ -1,91 +1,99 @@
 <!DOCTYPE html>
 <html>
-<style>
-    html,
-    body {
-        height: 100%
-    }
 
-    * {
-        padding: 0px;
-        margin: 0px;
-        box-sizing: border-box;
-    }
-
-    body {
-        color: white;
-        background-color: black;
-        font-size: 20px;
-    }
-
-    .emblem {
-        font-size: 64pt;
-        font-weight: bolder;
-    }
-
-    @media (orientation: landscape) {
-
-        .content {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            align-items: center;
-            height: 100%;
+<head>
+    <title>bzs42</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="http://bzs42.github.io/feed.xml" />
+    <link rel="stylesheet" href="Minimal.css">
+    <style>
+        html,
+        body {
+            height: 100%
         }
 
-        img {
-            height: 100%;
-            border-radius: 20px;
+        * {
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+
+        body {
+            color: white;
+            background-color: black;
+            font-size: 20px;
+        }
+
+        .emblem {
+            font-size: 64pt;
+            font-weight: bolder;
         }
 
         .nav {
-            text-align: right;
+            margin-right: 10px;
+            font-size: x-large;
         }
 
-        .pic {
-            height: 100%;
+        @media (orientation: landscape) {
+
+            .content {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                height: 100%;
+            }
+
+            .pic img {
+                height: 100%;
+            }
+
+            .nav {
+                text-align: right;
+            }
+
+            .pic {
+                height: 100%;
+            }
         }
-    }
 
-    @media (orientation: portrait) {
+        @media (orientation: portrait) {
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            height: 100%;
+            .content {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                height: 100%;
+            }
+
+            .pic img {
+                width: 100%;
+            }
+
+            .pic {
+                width: 100%;
+            }
+
+            .nav {
+                display: flex;
+                flex-direction: row;
+                align-items: baseline;
+                gap: 10px;
+            }
         }
 
-        img {
-            width: 100%;
-            border-radius: 20px;
-        }
-
-        .pic {
-            width: 100%;
-        }
-    }
-
-    .nav {
-        margin-right: 10px;
-        font-size: 32px;
-    }
-
-</style>
-
+    </style>
+</head>
 <body>
-
     <div class="content">
         <div class="nav">
             <div class="emblem">BZS42</div>
-            <p>bezetes@gmail.com</p>
             <div><a href="Blog.html">::Blog</a></div>
+            <div><a href="Feed.xml"><img src="FeedIcon.png" style="vertical-align:middle"/> Feed</a></div>
+            <div><a href="mailto:bezetes@gmail.com">@mail</a></div>
         </div>
         <div class="pic">
             <img src="Thumbs\2021-4.png">
         </div>
     </div>
-
 </body>
-
 </html>

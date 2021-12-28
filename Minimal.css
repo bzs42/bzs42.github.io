@@ -12,12 +12,12 @@ body {
     background-color: white;
 }
 
-.label {
-    padding: 0px 20px 0 20px;
+.pic img {
+    border-radius: 20px;
 }
 
-img {
-    border-radius: 20px;
+.label {
+    padding: 0px 20px 0 20px;
 }
 
 /* permalinks */
