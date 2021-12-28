@@ -1,0 +1,45 @@
+body {
+    color: white;
+    background-color: black;
+}
+
+.pic, .label {
+    border: 2px solid white;
+    border-radius: 20px;
+}
+
+.pic {
+    background-color: white;
+}
+
+.pic img {
+    border-radius: 20px;
+}
+
+.label {
+    padding: 0px 20px 0 20px;
+}
+
+/* permalinks */
+
+a {
+    text-decoration: none;
+    transition-duration: 0.3s;
+}
+
+h1:hover>.plink,
+p:hover>.plink {
+    opacity: 1
+}
+
+a.plink {
+    opacity: 0;
+    padding-left: 8px;
+    font-size: 0.8em;
+    font-weight: 600;
+    transition: opacity 180ms ease-in-out;
+}
+
+a.plink::before {
+    content: '\00B6'
+}

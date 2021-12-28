@@ -1,170 +1,99 @@
 <!DOCTYPE html>
 <html>
-<style>
-    body {
-        margin: 0px;
-        padding: 0px;
-        background-color: black;
-        font-size: 20px;
-    }
 
-    .header {
-        position: fixed;
-        top: 20%;
-        left: 0px;
-        width: 25%;
-        margin: 0px;
-        padding: 0px;
-        color: black;
-        background-color: white;
-        text-align: right;
-        border: solid white;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
+<head>
+    <title>bzs42</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="http://bzs42.github.io/feed.xml" />
+    <link rel="stylesheet" href="Minimal.css">
+    <style>
+        html,
+        body {
+            height: 100%
+        }
 
-    .emblem {
-        text-orientation: upright;
-        writing-mode: vertical-rl;
-        text-transform: uppercase;
-        font-size: 64pt;
-        font-weight: bolder;
-        margin-left: auto;
-        margin-right: 0;
-    }
+        * {
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
 
-    .content {
-        margin-left: 25%;
-        padding: 0px;
-    }
+        body {
+            color: white;
+            background-color: black;
+            font-size: 20px;
+        }
 
-    .leftCell {
-        width: 75%;
-        float: left;
-    }
+        .emblem {
+            font-size: 64pt;
+            font-weight: bolder;
+        }
 
-    .rightCell {
-        width: 25%;
-        float: right;
-    }
+        .nav {
+            margin-right: 10px;
+            font-size: x-large;
+        }
 
-    .row {
-        clear: both;
-    }
+        @media (orientation: landscape) {
 
-    .top,
-    .middle,
-    .bottom {
-        border: solid white;
-        background-color: white;
-    }
+            .content {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                height: 100%;
+            }
 
-    .top {
-        border-width: 20px 20px 10px 20px;
-        border-radius: 20px 20px 0px 0px;
-    }
+            .pic img {
+                height: 100%;
+            }
 
-    .middle {
-        border-width: 10px 20px 10px 20px;
-        border-radius: 0px;
-    }
+            .nav {
+                text-align: right;
+            }
 
-    .bottom {
-        border-width: 10px 20px 20px 10px;
-        border-radius: 0px 0px 20px 20px;
-    }
+            .pic {
+                height: 100%;
+            }
+        }
 
-    img {
-        border: solid white;
-        border-radius: 20px;
-        width: 100%;
-    }
+        @media (orientation: portrait) {
 
-    .label {
-        background-color: white;
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-        margin-top: 100px;
-        padding: 20px 20px 20px 0px;
-        display: inline-block;
-    }
+            .content {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                height: 100%;
+            }
 
-    a {
-        text-decoration: none;
-        transition-duration: 0.3s;
-    }
+            .pic img {
+                width: 100%;
+            }
 
-    /* permalinks */
+            .pic {
+                width: 100%;
+            }
 
-    h1:hover > .plink,
-    p:hover > .plink {
-        opacity: 1
-    }
+            .nav {
+                display: flex;
+                flex-direction: row;
+                align-items: baseline;
+                gap: 10px;
+            }
+        }
 
-    a.plink {
-        opacity: 0;
-        padding-left: 8px;
-        font-size: 0.8em;
-        font-weight: 600;
-        transition: opacity 180ms ease-in-out;
-    }
-
-    a.plink::before {
-        content: '\00B6'
-    }
-</style>
-
+    </style>
+</head>
 <body>
-
-    <div class="header">
-        <div class="emblem">bzs</div>
-        <p>bezetes42@gmail.com</p>
-    </div>
-
     <div class="content">
-
-        <div class="row">
-            <a name="plinprogress"></a>
-            <div class="leftCell">
-                <div class="top"><img src="Thumbs\20211122_192633.png" /></div>
-            </div>
-            <div class="rightCell">
-                <div class="label">
-                    <h1>in progress...<a class="plink" href="#plinprogress" title="Direct link to this"></a></h1>
-                </div>
-            </div>
+        <div class="nav">
+            <div class="emblem">BZS42</div>
+            <div><a href="Blog.html">::Blog</a></div>
+            <div><a href="Feed.xml"><img src="FeedIcon.png" style="vertical-align:middle"/> Feed</a></div>
+            <div><a href="mailto:bezetes@gmail.com">@mail</a></div>
         </div>
-
-        <div class="row">
-            <div class="leftCell">
-                <a name="pl4"></a>
-                <div class="middle"><img src="Thumbs\20211108_200610.png" /></div>
-            </div>
-            <div class="rightCell">
-                <div class="label">
-                    <h1>ancient cube<a class="plink" href="#pl4" title="Direct link to this"></a></h1>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="leftCell">
-                <div class="middle"><img src="Thumbs\IMG-20210711-WA0001.jpg" /></div>
-            </div>
-            <div class="rightCell">
-                <!--<div class="label"></div>-->
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="leftCell">
-                <div class="bottom"><img src="Thumbs\20190905_211239.png" /></div>
-            </div>
-            <div class="rightCell">
-                <!--<div class="label"></div>-->
-            </div>
+        <div class="pic">
+            <img src="Thumbs\2021-4.png">
         </div>
     </div>
 </body>
-
 </html>
