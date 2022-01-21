@@ -29,11 +29,11 @@ html {
         align-items: flex-start;
     }
 
-    .pic {
+    .stretchEntry {
         height: 100vh;
     }
 
-    .pic img {
+    .stretchEntry > img {
         height: 100%;
     }
 
@@ -48,11 +48,11 @@ html {
         align-items: center;
     }
 
-    .pic {
+    .stretchEntry {
         width: 96vw;
     }
 
-    .pic img {
+    .stretchEntry > img {
         width: 100%;
     }
 

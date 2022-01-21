@@ -3,13 +3,24 @@
 
     <title>BZS</title>
     <link href="http://bzs42.github.io/" />
-    <updated>2021-12-28T18:00:01Z</updated>
+    <updated>2022-01-22T17:00:01Z</updated>
     <author>
         <name>bezetes@gmail.com</name>
     </author>
     <id>http://bzs42.github.io/</id>
     <category term="art" />
 
+    <entry>
+        <title>Fotoshooting</title>
+        <link href="http://bzs42.github.io/Blog.html#note2022-1" />
+        <id>http://bzs42.github.io/Blog.html#2021-4</id>
+        <updated>2022-01-22T17:00:01Z</updated>
+        <summary>Ancient Cube in Szene gesetzt</summary>
+        <content type="html">
+            <img src="http://bzs42.github.io/Thumbs/2021-2-1.png" />
+            ...
+        </content>
+    </entry>
 
     <entry>
         <title>Preview</title>

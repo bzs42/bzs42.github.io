@@ -29,21 +29,28 @@ body {
     background: goldenrod;
 }
 
-.pic, .label {
+.stretchEntry, .entry, .label {
     border: 2px solid white;
     border-radius: 20px;
 }
 
-.pic {
+.stretchEntry {
     background-color: white;
 }
 
-.pic img {
+.stretchEntry > img {
+    border-radius: 20px;
+}
+
+.entry {
+    padding: 2px;
+}
+.entry > img {
     border-radius: 20px;
 }
 
 .label {
-    padding: 0px 20px 0 20px;
+    padding: 2px 20px 2px 20px;
 }
 
 /* permalinks */
