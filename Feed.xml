@@ -3,7 +3,7 @@
 
     <title>BZS</title>
     <link href="http://bzs42.github.io/" />
-    <updated>2022-01-22T17:00:01Z</updated>
+    <updated>2022-01-21T18:00:01Z</updated>
     <author>
         <name>bezetes@gmail.com</name>
     </author>
@@ -13,12 +13,14 @@
     <entry>
         <title>Fotoshooting</title>
         <link href="http://bzs42.github.io/Blog.html#note2022-1" />
-        <id>http://bzs42.github.io/Blog.html#2021-4</id>
-        <updated>2022-01-22T17:00:01Z</updated>
+        <id>http://bzs42.github.io/Blog.html#2022-1</id>
+        <updated>2022-01-21T18:00:00Z</updated>
         <summary>Ancient Cube in Szene gesetzt</summary>
-        <content type="html">
-            <img src="http://bzs42.github.io/Thumbs/2021-2-1.png" />
-            ...
+        <content type="xhtml">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <img src="http://bzs42.github.io/Thumbs/2021-2-1.png" />
+                ...
+             </div>
         </content>
     </entry>
 
@@ -28,10 +30,12 @@
         <id>http://bzs42.github.io/Blog.html#2021-4</id>
         <updated>2021-12-28T18:00:01Z</updated>
         <summary>Neues Ding.</summary>
-        <content type="html">
-            <h1>Neues...</h1>
-            ...Tonteil.
-            <img src="http://bzs42.github.io/Thumbs/2021-4.png" />
+        <content type="xhtml">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <h1>Neues...</h1>
+                ...Tonteil.
+                <img src="http://bzs42.github.io/Thumbs/2021-4.png" />
+            </div>
         </content>
     </entry>
 
