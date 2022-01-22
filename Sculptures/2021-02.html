@@ -3,8 +3,7 @@
 
 <head>
     <title>bzs42</title>
-    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="http://bzs42.github.io/feed.xml" />
-    <link rel="stylesheet" href="Minimal.css">
+    <link rel="stylesheet" href="../Minimal.css">
     <style>
         html,
         body {
@@ -29,8 +28,7 @@
         }
 
         .nav {
-            margin-right: 10px;
-            font-size: xx-large;
+            margin-left: 10px;
         }
 
         @media (orientation: landscape) {
@@ -38,9 +36,10 @@
             .content {
                 display: flex;
                 flex-direction: row;
-                justify-content: flex-end;
-                align-items: center;
+                justify-content: flex-start;
+                align-items: flex-start;
                 height: 100%;
+                gap: 10px;
             }
 
             .stretchEntry > img {
@@ -53,10 +52,10 @@
                 margin: 0px;
                 padding: 20px;
 
-                border-top-left-radius: 20px;
+                border-bottom-right-radius: 20px;
                 border-bottom-left-radius: 20px;
                 border-left: 2px solid white;
-                border-top: 2px solid white;
+                border-right: 2px solid white;
                 border-bottom: 2px solid white;
 
                 background: goldenrod;
@@ -72,8 +71,8 @@
             .content {
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-end;
-                align-items: center;
+                justify-content: flex-start;
+                align-items: flex-start;
                 height: 100%;
             }
 
@@ -108,15 +107,16 @@
 </head>
 <body>
     <div class="content">
-        <div class="nav">
-            <div class="emblem">BZS42</div>
-            <div><a href="Blog.html">::Blog</a></div>
-            <div><a href="Sculptures.html">::Sculptures</a></div>
-            <div><a href="Feed.xml"><img src="FeedIcon.png" style="vertical-align:middle"/></a></div>
-            <div><a href="mailto:bezetes@gmail.com">bezetes@gmail.com</a></div>
-        </div>
         <div class="stretchEntry">
-            <img src="Index/Thumbs/2021-4.png">
+            <img src="2021-02/2021-2-2.jpg">
+        </div>
+        <div>
+            <div class="blognav">
+                <h1><a href="../index.html">BZS</a>::<a href="../Sculptures.html">Sculptures</a>::Ancient Cube</h1>
+            </div>
+            <div class="label">
+                <p>dfsjkjf🇯🇲 dfsjajfldkj fdsajfdsj fljdfs</p>
+            </div>
         </div>
     </div>
 </body>

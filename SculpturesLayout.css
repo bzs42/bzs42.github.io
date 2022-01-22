@@ -1,0 +1,40 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin: 10px;
+}
+
+.pic {
+    border-radius: 20px;
+    border: 2px solid white;
+    background: white;
+}
+
+.pic img {
+    border-radius: 20px;
+}
+
+.label {
+    margin: 10px;
+}
