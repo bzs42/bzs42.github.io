@@ -2,9 +2,8 @@
 <html>
 
 <head>
-    <title>bzs42</title>
+    <title>bzs</title>
     <link rel="alternate" type="application/atom+xml" title="Atom feed" href="http://bzs42.github.io/feed.xml" />
-    <link rel="stylesheet" href="Minimal.css">
     <style>
         html,
         body {
@@ -23,101 +22,47 @@
             font-size: 20px;
         }
 
-        .emblem {
-            font-size: 64pt;
+        div {
+            padding: 10px;
+        }
+
+        div h1 {
+            font-size: 70px;
             font-weight: bolder;
         }
 
-        .nav {
-            margin-right: 10px;
-            font-size: xx-large;
+        div p {
+            font-size: 42px;
+            text-align: center;
         }
 
-        @media (orientation: landscape) {
-
-            .content {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-end;
-                align-items: center;
-                height: 100%;
-            }
-
-            .stretchEntry > img {
-                height: 100%;
-            }
-
-            .nav {
-                text-align: right;
-
-                margin: 0px;
-                padding: 20px;
-
-                border-top-left-radius: 20px;
-                border-bottom-left-radius: 20px;
-                border-left: 2px solid white;
-                border-top: 2px solid white;
-                border-bottom: 2px solid white;
-
-                background: goldenrod;
-            }
-
-            .stretchEntry {
-                height: 100%;
-            }
+        div a {
+            font-size: 28px;
         }
 
-        @media (orientation: portrait) {
-
-            .content {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                align-items: center;
-                height: 100%;
-            }
-
-            .stretchEntry > img {
-                width: 100%;
-            }
-
-            .stretchEntry {
-                width: 100%;
-            }
-
-            .nav {
-                display: flex;
-                flex-direction: row;
-                align-items: baseline;
-                gap: 10px;
-
-                margin: 0px;
-                padding: 20px;
-
-                border-top-left-radius: 20px;
-                border-top-right-radius: 20px;
-                border-left: 2px solid white;
-                border-right: 2px solid white;
-                border-top: 2px solid white;
-
-                background: goldenrod;
-            }
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
         }
-
     </style>
 </head>
+
 <body>
     <div class="content">
-        <div class="nav">
-            <div class="emblem">BZS42</div>
-            <div><a href="Blog.html">::Blog</a></div>
-            <div><a href="Sculptures.html">::Sculptures</a></div>
-            <div><a href="Feed.xml"><img src="FeedIcon.png" style="vertical-align:middle"/></a></div>
-            <div><a href="mailto:bezetes@gmail.com">bezetes@gmail.com</a></div>
+        <div class="emblem">
+            <h1>bzs(42)</h1>
+            <p>{🚀}</p>
         </div>
-        <div class="stretchEntry">
-            <img src="Index/Thumbs/2021-4.png">
+        <div>
+            👉 <a href="Blog/Blog.html">::blog</a>
+            👉 <a href="Sculptures/Sculptures.html">::sculptures</a>
+            <a href="mailto:bezetes@gmail.com">📧</a>
+            <a href="Feed.xml"><img src="FeedIcon.png" style="vertical-align:middle" /></a>
         </div>
     </div>
 </body>
+
 </html>
