@@ -1,3 +1,5 @@
+/* layout */
+
 * {
     padding: 0px;
     margin: 0px;
@@ -19,7 +21,7 @@ html {
 .item {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 
     margin: 10px;
@@ -36,32 +38,37 @@ html {
 /* style */
 
 body {
-    background-color: black;
+    background-color: #342609;
 }
 
 .pic img {
     border-radius: 20px;
-    opacity: 50%;
-}
-
-.pic img:hover {
-    opacity: 100%;
+    border: 2px solid #D4DAF7;
 }
 
 div * {
     font-size: 28px;
 }
 
+h1 {
+    font-size: 54px;
+}
+
 .nav {
-    margin: 0px 0px 0px 0px;
-    padding: 20px 20px 20px 20px;
-
     border-radius: 20px;
-    border: 2px solid white;
+    border: 2px solid #D4DAF7;
 
-    background: goldenrod;
+    color: #342609;
+    background: #FBA90A;
+
     width: 400px;
     height: 400px;
+
     text-align: center;
-    vertical-align: center;
+}
+
+a:link, a:visited, a:active, a:hover {
+    color: #183BF0;
+    text-decoration: none;
+    font-weight: bolder;
 }

@@ -31,7 +31,7 @@ html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 98vh;
+    min-height: 95vh;
 }
 
 @media (orientation: landscape) {
@@ -103,10 +103,12 @@ h1 {
     padding: 20px 20px 20px 20px;
 
     border-radius: 20px;
-    border: 2px solid white;
+    border: 2px solid #D4DAF7;;
 
-    background: goldenrod;
-    width: 400px;
+    color: #342609;
+    background: #FBA90A;
+
+    /*width: 400px;*/
 
     text-align: center;
     vertical-align: center;
@@ -114,4 +116,10 @@ h1 {
 
 .index img {
     border-radius: 20px;
+}
+
+a:link, a:visited, a:active, a:hover {
+    color: #183BF0;
+    text-decoration: none;
+    font-weight: bolder;
 }
