@@ -31,7 +31,7 @@ html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 95vh;
+    min-height: 90vh;
 }
 
 @media (orientation: landscape) {
@@ -75,18 +75,8 @@ body {
     background-color: black;
 }
 
-.stretchEntry,
-.entry,
-.label {
-    border: 2px solid white;
-    border-radius: 20px;
-}
-
-.stretchEntry {
-    background-color: white;
-}
-
 .stretchEntry img {
+    border: 2px solid #D4DAF7;
     border-radius: 20px;
 }
 
