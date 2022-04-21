@@ -87,12 +87,12 @@ body {
     color:  #FC600A;
     margin-bottom: 10px;
     border-radius: 10px;
-    padding: 0px 10px 0px 10px;
+    padding: 5px 10px 5px 10px;
 }
 
 .left,
 .right {
-    padding: 0px 10px 0px 10px;
+    padding: 5px 10px 5px 10px;
     background-color: #F0F7D4;
     color: #FC600A;
     margin-bottom: 10px;
@@ -126,7 +126,7 @@ img {
 }
 
 * div {
-    font-size: 21px;
+    font-size: 28px;
 }
 
 /* bubbles */

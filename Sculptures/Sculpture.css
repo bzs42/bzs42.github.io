@@ -81,16 +81,16 @@ body {
 }
 
 div * {
-    font-size: 21px;
+    font-size: 28px;
 }
 
 h1 {
-    font-size: 42px;
+    font-size: 54px;
 }
 
 .nav {
     margin: 0px 0px 28px 0px;
-    padding: 20px 20px 20px 20px;
+    padding: 10px 10px 10px 10px;
 
     border-radius: 20px;
     border: 2px solid #D4DAF7;;
@@ -101,7 +101,6 @@ h1 {
     /*width: 400px;*/
 
     text-align: center;
-    vertical-align: center;
 }
 
 .index img {
