@@ -125,8 +125,12 @@ img {
     border-radius: 10px;
 }
 
-* div {
+div * {
     font-size: 28px;
+}
+
+h1 {
+    font-size: 54px;
 }
 
 /* bubbles */
