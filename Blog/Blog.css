@@ -37,6 +37,7 @@
 .post {
     display: flex;
     flex-direction: column;
+    margin: 0px 20px 0px 20px;
 }
 
 .left {
@@ -97,18 +98,17 @@ body {
     color: #FC600A;
     margin-bottom: 10px;
     border-radius: 10px;
-
-    position:relative;
+    position: relative; /* for bubbles */
+    max-width: 75%
+}
+.left
+{
+    margin-left: 10px; /* bubble */
 }
 
-.left {
-    margin-left: 20px;
-    margin-right: 30px;
-}
-
-.right {
-    margin-right: 20px; /*10 bubble 10 to scrollbar*/
-    margin-left: 30px;
+.right
+{
+    margin-right: 10px; /* bubble */
 }
 
 .avatar {
@@ -182,7 +182,7 @@ a:visited,
 a:active,
 a:hover {
     color: #B2D732;
-    text-decoration: none;
+    /*text-decoration: none;*/
     font-weight: bolder;
 }
 
