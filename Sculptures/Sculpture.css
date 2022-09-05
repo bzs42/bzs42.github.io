@@ -6,10 +6,6 @@
     box-sizing: border-box;
 }
 
-html {
-    scroll-snap-type: y mandatory;
-}
-
 .content {
     display: flex;
     flex-direction: column;
@@ -18,15 +14,11 @@ html {
 }
 
 .item {
-    scroll-snap-align: start;
-
     margin-bottom: 10px;
     position: relative;
 }
 
 .start {
-    scroll-snap-align: start;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
