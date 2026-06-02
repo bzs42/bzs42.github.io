@@ -1,0 +1,76 @@
+/* Mobile-only Serien-Seite: Bilder einfach vertikal gestapelt, volle Breite.
+   Der Desktop-Kram (Thumbnail-Index, Landscape-Layout, 👇/👆-Pfeile) wurde
+   bei der Übertragung von der alten Sculptures-Version entfernt. */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+    color: white;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.start {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    padding: 16px;
+    text-align: center;
+}
+
+.start * {
+    font-size: 22px;
+}
+
+.nav {
+    margin-bottom: 24px;
+    padding: 12px;
+    border-radius: 20px;
+    border: 2px solid #D4DAF7;
+    color: #342609;
+    background: #FBA90A;
+    text-align: center;
+}
+
+.nav h1 {
+    font-size: 40px;
+    margin-top: 8px;
+}
+
+.item {
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.stretchEntry {
+    width: 96vw;
+}
+
+.stretchEntry img {
+    width: 100%;
+    display: block;
+    border: 2px solid #D4DAF7;
+    border-radius: 20px;
+}
+
+a:link,
+a:visited,
+a:active,
+a:hover {
+    color: #183BF0;
+    font-weight: bolder;
+}
