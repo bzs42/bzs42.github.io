@@ -24,17 +24,10 @@
             min-height: 100vh;
         }
 
-        .control {
+        p {
             font-size: clamp(17px, 4.6vw, 34px);
-            white-space: pre;
-        }
+            text-align: center;
 
-        .var {
-            color: #9cdcfe;
-        }
-
-        .comment {
-            color: #6a9955;
         }
 
         a.cap:link,
@@ -46,22 +39,19 @@
             text-decoration: underline;
         }
 
-        a.cap:hover {
-            background: #eee;
-        }
-
     </style>
 </head>
 
 <body>
 
-<pre class="control">
-    <span class="control">[</span>🌍<span class="control">](</span><span class="var">bzs42</span><span class="control">){</span>
-        <a id="art" class="cap" href="art/m/index.html">Art work</a>    <span class="comment">// my artworks</span>
-        🚀
-    <span class="control">}</span>
-</pre>
-
+    <div>
+    <p>
+        [🌍](bzs42){🚀}
+    </p>
+    <p>
+        <a id="art" class="cap" href="art/m/index.html">::artwork</a>
+    </p>
+    </div>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             const isWideEnough = window.innerWidth >= 1024;
