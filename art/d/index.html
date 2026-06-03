@@ -12,41 +12,55 @@
             box-sizing: border-box;
         }
 
-        html,
-        body {
+        html {
+            background-color: black;
             height: 100%;
         }
 
         body {
             color: white;
-            background-color: black;
             font-family: "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
-            padding: 0px;
             display: flex;
             flex-direction: column;
         }
 
-        h1 {
+        header, footer {
             flex: 0 0 auto;
-            margin: 8px 0 16px;
-            color: #FBA90A;
             text-align: right;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #FBA90A;
         }
 
         h2 {
-            flex: 0 0 auto;
-            margin: 8px 0;
+            font-size: 1.2rem;
             color: #FBA90A;
-            text-align: right;
+            font-weight: 400;
         }
 
-        /* The link rows share the remaining vertical space equally so that
-           together they fill the full height of the window. */
+        .return {
+            display: inline-block;
+            margin-top: 8px;
+            color: #536DFE;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .return:hover {
+            color: #FBA90A;
+        }
+
+        /* Nav füllt den restlichen Raum perfekt aus */
         nav {
             flex: 1 1 auto;
             display: flex;
             flex-direction: column;
+            gap: 4px;
+            /* Minimaler Abstand zwischen den Reihen verhindert visuelles Flackern */
         }
 
         a.row {
@@ -56,33 +70,24 @@
             align-items: center;
             padding: 0 24px;
             overflow: hidden;
-            font-size: clamp(1.5rem, 7vh, 6rem);
+            font-size: clamp(1.2rem, 5vh, 4rem);
+            /* Leicht nach unten korrigiert für bessere Mobile-Darstellung */
             font-weight: 600;
             text-decoration: none;
             line-height: 1;
-            transition: color 4s ease, font-size 0.5s ease, padding 0.5s ease;
+            color: #f0f0f0;
+            transition: color 0.4s ease, font-size 0.5s ease, padding 0.5s ease, flex-grow 0.5s ease;
         }
 
-        a.row:link,
-        a.row:visited,
-        a.row:active {
-            color: Azure;
-        }
-
-        /* The per-row background image lives on its own layer so its opacity
-           can be transitioned for a soft fade-in (background-image itself is
-           not animatable). */
+        /* In-Row Hintergrund-Ebene */
         a.row::before {
             content: "";
             position: absolute;
             inset: 0;
             z-index: 0;
-            background-image:
-                linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-                var(--bg);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), var(--bg);
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             opacity: 0;
             transition: opacity 0.6s ease;
         }
@@ -91,24 +96,42 @@
             opacity: 1;
         }
 
-        /* Keep the label above the image layer. The left/transform pair lets
-           the label glide smoothly to the horizontal centre on hover. */
+        /* Fullscreen Hintergrund-Ebene */
+        a.row::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), var(--bg);
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        a.row:hover::after {
+            opacity: 1;
+        }
+
+        /* Label-Zentrierung */
         a.row .label {
             position: relative;
             z-index: 1;
-            display: inline-block;
+            display: flex;
+            align-items: center;
             left: 0;
             transform: translateX(0);
             transition: left 0.5s ease, transform 0.5s ease;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         }
 
-        /* On hover the whole row reveals its image and the label slides
-           into the centre of the screen. */
         a.row:hover {
-            color: White;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-            font-size: clamp(2rem, 9vh, 7.5rem);
+            color: #ffffff;
+            font-size: clamp(1.5rem, 6.5vh, 5rem);
             padding: 0 48px;
+            flex-grow: 3;
+            /* 3 reicht völlig aus für einen dramatischen Effekt ohne Ruckeln */
         }
 
         a.row:hover .label {
@@ -116,40 +139,32 @@
             transform: translateX(-50%);
         }
 
-        /* The "Lyrics" prefix only appears when its row is hovered. */
+        /* Optimierter Präfix-Effekt ohne Ruckeln */
         .label .prefix {
-            display: none;
-        }
-
-        a.row:hover .label .prefix {
-            display: inline;
             color: #FBA90A;
         }
 
-        a.return {
-            flex: 0 0 auto;
-            margin-top: 16px;
-            color: #183BF0;
-        }
+
     </style>
 </head>
 
 <body>
-    <!--
-    <h1>bzs42::artwork</h1>
-    <h2>::Astrobotany</h2>
-    <a class="return" href="../../index.html">return</a>
-    <h2>::Lyrics</h2>
-    -->
+
+    <header>
+        <h1>bzs42::artwork</h1>
+    </header>
+
     <nav>
-        <a class="row" href="50shades.html" style="--bg: url('50shades.jpg')"><span class="label">.50 Shades of Purple - Light Fever</span></a>
-        <a class="row" href="cubes.html" style="--bg: url('cubes.jpg')"><span class="label">.Ancient Cubes</span></a>
-        <a class="row" href="revel1.html" style="--bg: url('revel1.jpg')"><span class="label"><span class="prefix">Astrobotany</span>.Revelation I</span></a>
-        <a class="row" href="revel2.html" style="--bg: url('revel2.jpg')"><span class="label"><span class="prefix">Astrobotany</span>.Revelation II</span></a>
-        <a class="row" href="astrobloom.html" style="--bg: url('astrobloom.jpg')"><span class="label"><span class="prefix">Astrobotany</span>.Astrobloom</span></a>
-        <a class="row" href="astrobloom.html" style="--bg: url('astrobloom.jpg')"><span class="label"><span class="prefix">Lyrics</span>.Emozyklopädie</span></a>
-        <a class="row" href="astrobloom.html" style="--bg: url('astrobloom.jpg')"><span class="label"><span class="prefix">Lyrics</span>.Amorexikon</span></a>
+        <a class="row" href="50shades.html" style="--bg: url('50shades.jpg');"><span class="label">.50 Shades of Purple - Light Fever</span></a>
+        <a class="row" href="cubes.html" style="--bg: url('cubes.jpg');"><span class="label">.Ancient Cubes</span></a>
+        <a class="row" href="revel1.html" style="--bg: url('revel1.jpg');"><span class="label"><span class="prefix">::Astrobotany.</span>Revelation I</span></a>
+        <a class="row" href="revel2.html" style="--bg: url('revel2.jpg');"><span class="label"><span class="prefix">::Astrobotany.</span>Revelation II</span></a>
+        <a class="row" href="astrobloom.html" style="--bg: url('astrobloom.jpg');"><span class="label"><span class="prefix">::Astrobotany.</span>Astrobloom</span></a>
     </nav>
+
+    <footer>
+        <a class="return" href="../../index.html">← return</a>
+    </footer>
 </body>
 
 </html>
