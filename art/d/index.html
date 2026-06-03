@@ -12,40 +12,144 @@
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            height: 100%;
+        }
+
         body {
             color: white;
             background-color: black;
             font-family: "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
-            padding: 24px;
+            padding: 0px;
+            display: flex;
+            flex-direction: column;
         }
 
         h1 {
-            margin: 16px 0;
+            flex: 0 0 auto;
+            margin: 8px 0 16px;
+            color: #FBA90A;
+            text-align: right;
         }
 
-        a:link,
-        a:visited,
-        a:active {
+        h2 {
+            flex: 0 0 auto;
+            margin: 8px 0;
+            color: #FBA90A;
+            text-align: right;
+        }
+
+        /* The link rows share the remaining vertical space equally so that
+           together they fill the full height of the window. */
+        nav {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a.row {
+            position: relative;
+            flex: 1 1 0;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            overflow: hidden;
+            font-size: clamp(1.5rem, 7vh, 6rem);
+            font-weight: 600;
+            text-decoration: none;
+            line-height: 1;
+            transition: color 4s ease, font-size 0.5s ease, padding 0.5s ease;
+        }
+
+        a.row:link,
+        a.row:visited,
+        a.row:active {
             color: Azure;
         }
 
-        a:hover {
-            color: White;
+        /* The per-row background image lives on its own layer so its opacity
+           can be transitioned for a soft fade-in (background-image itself is
+           not animatable). */
+        a.row::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+                var(--bg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 0.6s ease;
         }
 
+        a.row:hover::before {
+            opacity: 1;
+        }
+
+        /* Keep the label above the image layer. The left/transform pair lets
+           the label glide smoothly to the horizontal centre on hover. */
+        a.row .label {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            left: 0;
+            transform: translateX(0);
+            transition: left 0.5s ease, transform 0.5s ease;
+        }
+
+        /* On hover the whole row reveals its image and the label slides
+           into the centre of the screen. */
+        a.row:hover {
+            color: White;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+            font-size: clamp(2rem, 9vh, 7.5rem);
+            padding: 0 48px;
+        }
+
+        a.row:hover .label {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* The "Lyrics" prefix only appears when its row is hovered. */
+        .label .prefix {
+            display: none;
+        }
+
+        a.row:hover .label .prefix {
+            display: inline;
+            color: #FBA90A;
+        }
+
+        a.return {
+            flex: 0 0 auto;
+            margin-top: 16px;
+            color: #183BF0;
+        }
     </style>
 </head>
 
 <body>
+    <!--
     <h1>bzs42::artwork</h1>
-    <div><a href="">->50 Shades of Purple - Light Fever</a></div>
-    <a href=""></a>->Ancient Cubes</a></div>
     <h2>::Astrobotany</h2>
-    <div><a href="">->Revelation I</a></div>
-    <div><a href="">->Revelation II</a></div>
-    <div><a href="">->Astrobloom</a></div>
-    <a href="../../index.html">return</a>
+    <a class="return" href="../../index.html">return</a>
+    <h2>::Lyrics</h2>
+    -->
+    <nav>
+        <a class="row" href="50shades.html" style="--bg: url('50shades.jpg')"><span class="label">.50 Shades of Purple - Light Fever</span></a>
+        <a class="row" href="cubes.html" style="--bg: url('cubes.jpg')"><span class="label">.Ancient Cubes</span></a>
+        <a class="row" href="revel1.html" style="--bg: url('revel1.jpg')"><span class="label"><span class="prefix">Astrobotany</span>.Revelation I</span></a>
+        <a class="row" href="revel2.html" style="--bg: url('revel2.jpg')"><span class="label"><span class="prefix">Astrobotany</span>.Revelation II</span></a>
+        <a class="row" href="astrobloom.html" style="--bg: url('astrobloom.jpg')"><span class="label"><span class="prefix">Astrobotany</span>.Astrobloom</span></a>
+        <a class="row" href="astrobloom.html" style="--bg: url('astrobloom.jpg')"><span class="label"><span class="prefix">Lyrics</span>.Emozyklopädie</span></a>
+        <a class="row" href="astrobloom.html" style="--bg: url('astrobloom.jpg')"><span class="label"><span class="prefix">Lyrics</span>.Amorexikon</span></a>
+    </nav>
 </body>
 
 </html>
