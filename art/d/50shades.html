@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>bzs42::artwork — 50 Shades of Purple</title>
     <style>
+        /* --- 1. VARIABLEN & RESET --- */
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #fba90a;
+            --link-color: #536dfe;
+            --gap: 5px;
+            --transition-speed: 0.6s;
+            --fade-speed: 0.4s;
+        }
+
         * {
             padding: 0;
             margin: 0;
@@ -15,72 +26,67 @@
         html,
         body {
             height: 100%;
-        }
-
-        html {
-            background-color: black;
-        }
-
-        body {
-            color: white;
-            font-family: "Segoe UI", Roboto, sans-serif;
-            min-height: 100vh;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
+            background-color: var(--bg-color);
             overflow: hidden;
         }
 
-        /* Header & footer match art/d/index.html. They collapse and fade out
-           together with the titles (same .titles-hidden toggle), handing the
-           freed vertical space to the gallery. */
+        body {
+            color: var(--text-color);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 2. HEADER & FOOTER --- */
         header,
         footer {
             flex: 0 0 auto;
             text-align: right;
             overflow: hidden;
-            max-height: 3rem;
             opacity: 1;
-            transition: max-height 0.6s ease, opacity 0.4s ease;
+            max-height: 100px;
+            /* Definiertes Maximum für saubere Transition */
+            transition: max-height var(--transition-speed) ease, opacity var(--fade-speed) ease;
         }
 
         h1 {
-            font-size: 1.5rem;
-            color: #FBA90A;
+            font-size: 2.5rem;
+            color: var(--text-color);
+        }
+
+        h1 .prefix {
+            color: var(--accent-color);
         }
 
         .return {
             display: inline-block;
-            margin-top: 8px;
-            color: #536DFE;
+            color: var(--link-color);
             text-decoration: none;
             font-weight: bold;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
         }
 
-        .return:hover {
-            color: #FBA90A;
+        .return:hover,
+        .return:focus {
+            /* Focus für Tastaturnutzer hinzugefügt */
+            color: var(--accent-color);
+            outline: none;
         }
 
-        body.titles-hidden header,
-        body.titles-hidden footer {
-            max-height: 0;
-            opacity: 0;
-        }
-
-        /* Two rows that split the available height equally. */
+        /* --- 3. GALLERY LAYOUT (FLEXBOX) --- */
         .gallery {
             flex: 1 1 auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: var(--gap);
             min-height: 0;
+            /* Verhindert das Aufblähen in Flex-Containern */
         }
 
         .gallery-row {
             flex: 1 1 0;
             display: flex;
-            gap: 16px;
+            gap: var(--gap);
             min-height: 0;
         }
 
@@ -92,8 +98,6 @@
             min-height: 0;
         }
 
-        /* The image takes all the room the caption leaves behind, so when the
-           caption collapses the picture grows into the freed space. */
         figure img {
             flex: 1 1 0;
             width: 100%;
@@ -106,21 +110,26 @@
             flex: 0 0 auto;
             overflow: hidden;
             text-align: center;
-            color: #FBA90A;
-            font-size: 24px;
-            max-height: 2.4rem;
-            padding-top: 8px;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            /* Umgestellt auf rem für bessere Skalierbarkeit */
+            padding: 8px;
             opacity: 1;
-            /* Animating max-height/padding gradually hands the space to the
-               image above, so the picture scales up as the title fades out. */
-            transition: max-height 0.6s ease, padding-top 0.6s ease, opacity 0.4s ease;
+            max-height: 50px;
+            /* Definiertes Maximum */
+            transition: max-height var(--transition-speed) ease, padding var(--transition-speed) ease, opacity var(--fade-speed) ease;
         }
 
-        /* Titles hidden: captions collapse to nothing, images take over. */
+        /* --- 4. MODUS: TITEL VERSTECKT --- */
+        body.titles-hidden header,
+        body.titles-hidden footer,
         body.titles-hidden figcaption {
             max-height: 0;
-            padding-top: 0;
             opacity: 0;
+        }
+
+        body.titles-hidden figcaption {
+            padding: 0;
         }
     </style>
 </head>
@@ -128,7 +137,7 @@
 <body>
 
     <header>
-        <h1>bzs42::artwork.50 Shades of Purple - Light Fever</h1>
+        <h1><span class="prefix">bzs42::artwork.</span>50 Shades of Purple - Light Fever</h1>
     </header>
 
     <div class="gallery">
@@ -188,11 +197,13 @@
         function showTitles() {
             document.body.classList.remove("titles-hidden");
             clearTimeout(hideTimer);
-            hideTimer = setTimeout(hideTitles, 5000);
+            hideTimer = setTimeout(hideTitles, 3000);
         }
 
-        hideTimer = setTimeout(hideTitles, 5000);
+        hideTimer = setTimeout(hideTitles, 3000);
         window.addEventListener("mousemove", showTitles);
+        window.addEventListener("touchstart", showTitles);
+        window.addEventListener("keydown", showTitles);
     </script>
 </body>
 
