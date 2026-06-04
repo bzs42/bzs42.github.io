@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bzs42::artwork — Ancient Cubes</title>
+    <style>
+        /* --- 1. VARIABLEN & RESET --- */
+        :root {
+            /* warmer, erdiger Ton passend zum Terrakotta der Würfel */
+            --bg-color: #2b1c15;
+            --text-color: #f3e7df;
+            --accent-color: #c96a45;
+            --link-color: #e0a17f;
+            --gap: 6px;
+            --transition-speed: 0.5s;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        body {
+            color: var(--text-color);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* --- 2. VERTIKALER HEADER (ganz links, volle Höhe) --- */
+        .sidebar {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 6px;
+        }
+
+        .title {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            gap: 4px;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        .title .seg {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-orientation: mixed;
+            white-space: nowrap;
+            padding: 12px 7px;
+        }
+
+        .title .seg1 {
+            color: #f3e7df;
+            background: #c96a45;
+        }
+
+        .title .seg2 {
+            color: #2b1c15;
+            background: #e0a17f;
+        }
+
+        .title .seg3 {
+            color: #c96a45;
+            background: #1c120d;
+        }
+
+        .return {
+            display: inline-block;
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .return:hover,
+        .return:focus {
+            color: var(--accent-color);
+            outline: none;
+        }
+
+        /* --- 3. BÜHNE: 3 SPALTEN, AM UNTEREN RAND AUSGERICHTET --- */
+        .stage {
+            flex: 1 1 auto;
+            display: flex;
+            align-items: flex-end;
+            gap: var(--gap);
+            min-width: 0;
+            min-height: 0;
+        }
+
+        /* linke Spalte: Lupe – zeigt einen vergrößerten Ausschnitt des
+           mittleren Bildes an der Mausposition */
+        .zoom-wrap {
+            flex: 1 1 auto;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        .zoom {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-color: rgba(0, 0, 0, 0.2);
+            visibility: hidden;
+        }
+
+        .zoom.active {
+            visibility: visible;
+        }
+
+        /* mittlere Spalte: das große Bild, so hoch wie möglich */
+        .featured-wrap {
+            flex: 0 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            min-width: 0;
+        }
+
+        .featured {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* rechte Spalte: zwei Bilder übereinander, so breit wie verfügbar */
+        .side {
+            flex: 0 0 auto;
+            width: 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: var(--gap);
+            min-height: 0;
+        }
+
+        .thumb {
+            width: 100%;
+            display: block;
+            cursor: pointer;
+            transition: opacity var(--transition-speed) ease, filter 0.3s ease;
+        }
+
+        .thumb:hover,
+        .thumb:focus {
+            filter: brightness(1.12);
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h1 class="title">
+            <span class="seg seg1">bzs::artwork</span>
+            <span class="seg seg2">.Ancient Cubes</span>
+            <span class="seg seg3">ᚢᛈᛞᛉ</span>
+        </h1>
+        <a class="return" href="../index.html">← return</a>
+    </aside>
+
+    <div class="stage">
+        <div class="zoom-wrap">
+            <div class="zoom" id="zoom"></div>
+        </div>
+        <div class="featured-wrap">
+            <img class="featured" id="featured" src="2021-02-01.jpg" data-base="2021-02-01" alt="Ancient Cubes" />
+        </div>
+        <div class="side">
+            <img class="thumb" src="2021-02-02_600x600.jpg" data-base="2021-02-02" alt="Ancient Cubes" />
+            <img class="thumb" src="2021-02-03_600x600.jpg" data-base="2021-02-03" alt="Ancient Cubes" />
+        </div>
+    </div>
+
+    <script>
+        // Klick auf ein kleines Bild tauscht es mit dem großen Bild links aus.
+        // Das große Bild lädt immer die volle Auflösung, die Seitenspalte die
+        // verkleinerten _600x600-Versionen.
+        const featured = document.getElementById("featured");
+
+        document.querySelectorAll(".thumb").forEach(function (thumb) {
+            thumb.addEventListener("click", function () {
+                const prevBase = featured.dataset.base;
+                const nextBase = thumb.dataset.base;
+
+                featured.dataset.base = nextBase;
+                featured.src = nextBase + ".jpg";
+
+                thumb.dataset.base = prevBase;
+                thumb.src = prevBase + "_600x600.jpg";
+            });
+        });
+
+        // Lupe: Bewegt sich die Maus über dem großen Bild, zeigt die linke
+        // Spalte einen vergrößerten Ausschnitt der aktuellen Mausposition.
+        // Außerhalb des großen Bildes bleibt die Spalte leer.
+        const zoom = document.getElementById("zoom");
+        const ZOOM = 2.6;
+
+        featured.addEventListener("mousemove", function (e) {
+            const rect = featured.getBoundingClientRect();
+            const cx = e.clientX - rect.left;
+            const cy = e.clientY - rect.top;
+
+            if (cx < 0 || cy < 0 || cx > rect.width || cy > rect.height) {
+                zoom.classList.remove("active");
+                return;
+            }
+
+            const src = featured.currentSrc || featured.src;
+            if (zoom.dataset.src !== src) {
+                zoom.style.backgroundImage = "url('" + src + "')";
+                zoom.dataset.src = src;
+            }
+
+            const bgW = rect.width * ZOOM;
+            const bgH = rect.height * ZOOM;
+            const posX = zoom.clientWidth / 2 - cx * ZOOM;
+            const posY = zoom.clientHeight / 2 - cy * ZOOM;
+
+            zoom.style.backgroundSize = bgW + "px " + bgH + "px";
+            zoom.style.backgroundPosition = posX + "px " + posY + "px";
+            zoom.classList.add("active");
+        });
+
+        featured.addEventListener("mouseleave", function () {
+            zoom.classList.remove("active");
+        });
+    </script>
+</body>
+
+</html>
