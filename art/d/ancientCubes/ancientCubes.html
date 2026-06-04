@@ -8,11 +8,17 @@
     <style>
         /* --- 1. VARIABLEN & RESET --- */
         :root {
-            /* warmer, erdiger Ton passend zum Terrakotta der Würfel */
+            /* HINTERGRUND: warmer, erdiger Terrakotta-Ton der Würfel – bleibt erhalten */
             --bg-color: #2b1c15;
-            --text-color: #f3e7df;
-            --accent-color: #c96a45;
-            --link-color: #e0a17f;
+
+            /* SCHRIFT & GITTER: leuchtendes Stargate-Cyan, wie die Glyphen auf
+               den technologischen Raumschiffen / dem Event Horizon */
+            --glyph-cyan: #7ff0ff;
+            --glyph-cyan-dim: #4ec3d6;
+            --glyph-teal-deep: #0c2c33;
+            --text-color: #aee9f0;
+            --accent-color: #7ff0ff;
+            --link-color: #6fd4e6;
             --gap: 6px;
             --transition-speed: 0.5s;
         }
@@ -56,6 +62,7 @@
             font-size: 1.9rem;
             font-weight: 600;
             letter-spacing: 0.04em;
+            text-shadow: 0 0 8px rgba(127, 240, 255, 0.45);
         }
 
         .title .seg {
@@ -67,18 +74,20 @@
         }
 
         .title .seg1 {
-            color: #f3e7df;
-            background: #c96a45;
+            color: var(--glyph-cyan);
+            background: var(--glyph-teal-deep);
         }
 
         .title .seg2 {
-            color: #2b1c15;
-            background: #e0a17f;
+            color: var(--glyph-teal-deep);
+            background: var(--glyph-cyan-dim);
         }
 
         .title .seg3 {
-            color: #c96a45;
-            background: #1c120d;
+            /* die Runen-Glyphen: hell leuchtendes Cyan auf tiefem Schwarz-Teal */
+            color: var(--glyph-cyan);
+            background: #06181c;
+            text-shadow: 0 0 10px rgba(127, 240, 255, 0.8);
         }
 
         .return {
@@ -129,6 +138,19 @@
             visibility: visible;
         }
 
+        .zoom::before {
+            content: '';
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--glyph-cyan);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
         /* mittlere Spalte: das große Bild, so hoch wie möglich */
         .featured-wrap {
             flex: 0 0 auto;
@@ -169,10 +191,24 @@
             filter: brightness(1.12);
             outline: none;
         }
+
+        .terminal-hintergrund {
+            /* 1. Hintergrundfarbe: warmer Terrakotta-Ton (Kontrast zum Cyan-Gitter) */
+            background-color: var(--bg-color);
+
+            /* 2. Zwei überlagerte Linien-Muster (horizontal & vertikal) im
+                  Stargate-Glyphen-Cyan – das technologische Raster */
+            background-image:
+                linear-gradient(to right, rgba(127, 240, 255, 0.16) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(127, 240, 255, 0.16) 1px, transparent 1px);
+
+            /* 3. Die Größe einer einzelnen Raster-Kachel */
+            background-size: 25px 25px;
+        }
     </style>
 </head>
 
-<body>
+<body class="terminal-hintergrund">
 
     <aside class="sidebar">
         <h1 class="title">
