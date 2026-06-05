@@ -19,6 +19,9 @@
             --text-color: #aee9f0;
             --accent-color: #7ff0ff;
             --link-color: #6fd4e6;
+
+            /* technisches Blau für die Verbindungs-Knoten */
+            --tech-blue: #183BF0;
             --gap: 6px;
             --transition-speed: 0.5s;
         }
@@ -43,21 +46,29 @@
             flex-direction: row;
         }
 
-        /* --- 2. VERTIKALER HEADER (ganz links, volle Höhe) --- */
+        /* --- 2. HEADER (oben links, überlagert das Zoom-Bild) --- */
         .sidebar {
-            flex: 0 0 auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 18px;
-            padding: 18px 6px;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 0px;
+            pointer-events: none;
+        }
+
+        .sidebar .return {
+            pointer-events: auto;
         }
 
         .title {
             display: flex;
-            flex-direction: row;
-            align-items: flex-end;
+            /* Segmente stehen untereinander */
+            flex-direction: column;
+            align-items: flex-start;
             gap: 4px;
             font-size: 1.9rem;
             font-weight: 600;
@@ -66,11 +77,8 @@
         }
 
         .title .seg {
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-            text-orientation: mixed;
             white-space: nowrap;
-            padding: 12px 7px;
+            padding: 7px 12px;
         }
 
         .title .seg1 {
@@ -185,6 +193,7 @@
         .featured-wrap {
             flex: 0 0 auto;
             height: 100%;
+            position: relative;
             display: flex;
             align-items: flex-end;
             justify-content: flex-end;
@@ -196,6 +205,34 @@
             max-width: 100%;
             object-fit: contain;
             display: block;
+        }
+
+        /* Thumb-Host: relativer Anker pro Thumbnail, damit der Kreis
+           links mittig am Thumb sitzt. Höhe ergibt sich automatisch. */
+        .side .node-host {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        /* Verbindungs-Knoten: technischer blauer Kreis mit Cyan-Glühen.
+           Liegt links mittig am Bild, über allen Bildern (hohe z-index),
+           blockiert aber keine Maus-Interaktion (pointer-events: none). */
+        .node {
+            position: absolute;
+            left: -3px;
+            top: 75%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            /*background: var(--tech-blue);*/
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
+            z-index: 30;
+            pointer-events: none;
         }
 
         /* rechte Spalte: zwei Bilder übereinander, so breit wie verfügbar */
@@ -241,12 +278,12 @@
 <body class="terminal-hintergrund">
 
     <aside class="sidebar">
-        <h1 class="title">
-            <span class="seg seg1">bzs::artwork</span>
-            <span class="seg seg2">.Ancient Cubes</span>
-            <span class="seg seg3">ᚢᛈᛞᛉ</span>
-        </h1>
         <a class="return" href="../index.html">← return</a>
+        <h1 class="title">
+            <div class="seg seg1">bzs::artwork</div>
+            <div class="seg seg2">.Ancient Cubes</div>
+            <div class="seg seg3">ᚢᛈᛞᛉ</div>
+        </h1>
     </aside>
 
     <div class="stage">
@@ -255,10 +292,17 @@
         </div>
         <div class="featured-wrap">
             <img class="featured" id="featured" src="2021-02-01.jpg" data-base="2021-02-01" alt="Ancient Cubes" />
+            <span class="node"></span>
         </div>
         <div class="side">
-            <img class="thumb" src="2021-02-02_600x600.jpg" data-base="2021-02-02" alt="Ancient Cubes" />
-            <img class="thumb" src="2021-02-03_600x600.jpg" data-base="2021-02-03" alt="Ancient Cubes" />
+            <span class="node-host">
+                <img class="thumb" src="2021-02-02_600x600.jpg" data-base="2021-02-02" alt="Ancient Cubes" />
+                <span class="node"></span>
+            </span>
+            <span class="node-host">
+                <img class="thumb" src="2021-02-03_600x600.jpg" data-base="2021-02-03" alt="Ancient Cubes" />
+                <span class="node"></span>
+            </span>
         </div>
     </div>
 
