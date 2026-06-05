@@ -36,11 +36,15 @@
         body {
             color: var(--text-color);
             font-family: "Segoe UI", Roboto, sans-serif;
+            /* 10px Safe-Area: schützt vor Safaris runden Fensterecken und der
+               Fullscreen-Navigations-Hotzone. Die volle-Höhe-Kinder unten
+               nutzen daher height: 100% (= 100vh - 20px) statt 100vh. */
+            padding: 10px;
         }
 
         /* --- 2. HORIZONTALER SCROLLER (volle Höhe) --- */
         .scroller {
-            height: 100vh;
+            height: 100%;
             display: flex;
             flex-direction: row;
             align-items: stretch;
@@ -58,7 +62,7 @@
 
         .panel {
             flex: 0 0 auto;
-            height: 100vh;
+            height: 100%;
             scroll-snap-align: center;
             /* seitliche Panels: leicht abgedunkelt und anklickbar (zentrieren);
                sie pulsieren sanft als Hinweis, dass man dort klicken kann */
@@ -76,8 +80,8 @@
         }
 
         @keyframes panel-pulse {
-            0%, 100% { opacity: 0.45; }
-            50% { opacity: 0.62; }
+            0%, 100% { opacity: 0.10; }
+            50% { opacity: 0.45; }
         }
 
         /* --- 3. GROSSES BILD: volle Höhe, Breite folgt (Bilder sind quadratisch) --- */
@@ -88,7 +92,7 @@
         }
 
         .shot img {
-            height: 100vh;
+            height: 100%;
             width: auto;
             /* Breite steht schon vor dem Laden fest (Bilder sind quadratisch)
                -> kein Layout-Shift, Zentrierung bleibt korrekt */
