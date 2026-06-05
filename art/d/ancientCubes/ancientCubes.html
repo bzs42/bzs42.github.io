@@ -291,16 +291,16 @@
             <div class="zoom" id="zoom"></div>
         </div>
         <div class="featured-wrap">
-            <img class="featured" id="featured" src="2021-02-01.jpg" data-base="2021-02-01" alt="Ancient Cubes" />
+            <img class="featured" id="featured" src="2021-02-01_2160.webp" data-base="2021-02-01" alt="Ancient Cubes" />
             <span class="node"></span>
         </div>
         <div class="side">
             <span class="node-host">
-                <img class="thumb" src="2021-02-02_600x600.jpg" data-base="2021-02-02" alt="Ancient Cubes" />
+                <img class="thumb" src="2021-02-02_384.webp" data-base="2021-02-02" alt="Ancient Cubes" />
                 <span class="node"></span>
             </span>
             <span class="node-host">
-                <img class="thumb" src="2021-02-03_600x600.jpg" data-base="2021-02-03" alt="Ancient Cubes" />
+                <img class="thumb" src="2021-02-03_384.webp" data-base="2021-02-03" alt="Ancient Cubes" />
                 <span class="node"></span>
             </span>
         </div>
@@ -308,8 +308,9 @@
 
     <script>
         // Klick auf ein kleines Bild tauscht es mit dem großen Bild links aus.
-        // Das große Bild lädt immer die volle Auflösung, die Seitenspalte die
-        // verkleinerten _600x600-Versionen.
+        // Das große Bild lädt die fürs 4K-Layout passende _2160-Version, die
+        // Seitenspalte die kleinen _384-Thumbnails. Die volle Auflösung
+        // (Original <base>.jpg) wird nur von der Zoom-Lupe verwendet.
         const featured = document.getElementById("featured");
 
         document.querySelectorAll(".thumb").forEach(function (thumb) {
@@ -318,10 +319,10 @@
                 const nextBase = thumb.dataset.base;
 
                 featured.dataset.base = nextBase;
-                featured.src = nextBase + ".jpg";
+                featured.src = nextBase + "_2160.webp";
 
                 thumb.dataset.base = prevBase;
-                thumb.src = prevBase + "_600x600.jpg";
+                thumb.src = prevBase + "_384.webp";
             });
         });
 
@@ -329,7 +330,7 @@
         // Spalte einen vergrößerten Ausschnitt der aktuellen Mausposition.
         // Außerhalb des großen Bildes bleibt die Spalte leer.
         const zoom = document.getElementById("zoom");
-        const ZOOM = 2.6;
+        const ZOOM = 3;
 
         featured.addEventListener("mousemove", function (e) {
             const rect = featured.getBoundingClientRect();
@@ -341,7 +342,9 @@
                 return;
             }
 
-            const src = featured.currentSrc || featured.src;
+            // Zoom nutzt immer das hochauflösende Original (<base>.webp),
+            // nicht die verkleinerte _2160-Version des Mittel-Bildes.
+            const src = featured.dataset.base + ".webp";
             if (zoom.dataset.src !== src) {
                 zoom.style.backgroundImage = "url('" + src + "')";
                 zoom.dataset.src = src;

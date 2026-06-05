@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bzs42::artwork — Revelation</title>
+    <style>
+        /* --- 1. VARIABLEN & RESET --- */
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #FBA90A;
+            --link-color: #536DFE;
+            --gap: 6px;
+            /* Größtmöglicher Panel-Abstand, bei dem das nächste/vorige Panel
+               noch mind. 5vw (5% der Bildschirmbreite) hervorschaut und damit
+               anklickbar bleibt. Seitenraum bei zentriertem Panel = 50vw-50vh,
+               davon 5vw für die sichtbare Nachbarkante reservieren. */
+            --panel-gap: max(8px, calc(45vw - 50vh));
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        body {
+            color: var(--text-color);
+            font-family: "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* --- 2. HORIZONTALER SCROLLER (volle Höhe) --- */
+        .scroller {
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: var(--panel-gap);
+            /* seitlicher Freiraum, damit auch das erste/letzte Panel mittig
+               zentriert werden kann (Panels sind quadratisch = 100vh breit) */
+            padding-inline: max(0px, calc(50vw - 50vh));
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #333 #000;
+        }
+
+        .panel {
+            flex: 0 0 auto;
+            height: 100vh;
+            scroll-snap-align: center;
+            /* seitliche Panels: abgedunkelt und anklickbar (zentrieren) */
+            opacity: 0.35;
+            cursor: pointer;
+            transition: opacity 0.4s ease;
+        }
+
+        /* das zentrierte Panel: voll sichtbar und nicht „anklickbar" */
+        .panel.centered {
+            opacity: 1;
+            cursor: default;
+        }
+
+        /* Links innerhalb eines Panels bleiben immer anklickbar */
+        .panel .return {
+            cursor: pointer;
+        }
+
+        /* --- 3. GROSSES BILD: volle Höhe, Breite folgt (Bilder sind quadratisch) --- */
+        .shot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shot img {
+            height: 100vh;
+            width: auto;
+            /* Breite steht schon vor dem Laden fest (Bilder sind quadratisch)
+               -> kein Layout-Shift, Zentrierung bleibt korrekt */
+            aspect-ratio: 1 / 1;
+            display: block;
+        }
+
+        /* --- 4. ÜBERSICHT: gleiches Format wie ein Einzelbild (quadratisch,
+               volle Höhe), Überschrift oben, darunter das 2x2-Grid --- */
+        .overview {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            gap: 16px;
+        }
+
+        .overview .head {
+            flex: 0 0 auto;
+        }
+
+        .overview-title {
+            font-size: clamp(1rem, 2.3vh, 1.7rem);
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .overview-title .prefix {
+            color: var(--accent-color);
+        }
+
+        .return {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .return:hover,
+        .return:focus {
+            color: var(--accent-color);
+            outline: none;
+        }
+
+        /* Das 2x2-Grid füllt die verbleibende Höhe der Spalte. */
+        .thumbs {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: var(--gap);
+        }
+
+        .thumbs img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scroller" id="scroller">
+
+        <!-- ============ Revelation I (2021-01) ============ -->
+        <section class="panel overview" id="rev1">
+            <div class="head">
+                <h2 class="overview-title"><span class="prefix">bzs::artwork::Xenobotanix</span> .Revelation I</h2>
+                <a class="return" href="../index.html">← return</a>
+            </div>
+            <div class="thumbs">
+                <img src="2021-01-01_2160.webp" alt="Revelation I — 1" loading="lazy" />
+                <img src="2021-01-02_2160.webp" alt="Revelation I — 2" loading="lazy" />
+                <img src="2021-01-04_2160.webp" alt="Revelation I — 3" loading="lazy" />
+                <img src="2021-01-06_2160.webp" alt="Revelation I — 4" loading="lazy" />
+            </div>
+        </section>
+        <div class="panel shot"><img src="2021-01-01_2160.webp" alt="Revelation I — 1" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-01-02_2160.webp" alt="Revelation I — 2" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-01-04_2160.webp" alt="Revelation I — 3" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-01-06_2160.webp" alt="Revelation I — 4" loading="lazy" /></div>
+
+        <!-- ============ Revelation II (2021-04) ============ -->
+        <section class="panel overview" id="rev2">
+            <div class="head">
+                <h2 class="overview-title"><span class="prefix">bzs::artwork::Xenobotanix</span> .Revelation II</h2>
+                <a class="return" href="../index.html">← return</a>
+            </div>
+            <div class="thumbs">
+                <img src="2021-04-01_2160.webp" alt="Revelation II — 1" loading="lazy" />
+                <img src="2021-04-03_2160.webp" alt="Revelation II — 2" loading="lazy" />
+                <img src="2021-04-04_2160.webp" alt="Revelation II — 3" loading="lazy" />
+                <img src="2021-04-05_2160.webp" alt="Revelation II — 4" loading="lazy" />
+            </div>
+        </section>
+        <div class="panel shot"><img src="2021-04-01_2160.webp" alt="Revelation II — 1" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-04-03_2160.webp" alt="Revelation II — 2" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-04-04_2160.webp" alt="Revelation II — 3" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-04-05_2160.webp" alt="Revelation II — 4" loading="lazy" /></div>
+
+    </div>
+
+    <script>
+        // Horizontaler Voll-Höhe-Scroller mit Panels (Übersicht + Großbilder).
+        // - Klick auf ein seitliches Panel zentriert es animiert.
+        // - Das jeweils mittigste Panel ist voll sichtbar, die übrigen abgedunkelt;
+        //   die Markierung folgt live dem Scrollen.
+        // - Per URL-Anker (#rev1 / #rev2) startet die Seite an der jeweiligen
+        //   Übersichtsspalte.
+        const scroller = document.getElementById("scroller");
+        const panels = Array.from(scroller.querySelectorAll(".panel"));
+
+        // Markiert genau ein Panel als zentriert (voll sichtbar, nicht klickbar).
+        function setCentered(i) {
+            panels.forEach(function (p, k) {
+                p.classList.toggle("centered", k === i);
+            });
+        }
+
+        // Index des Panels, dessen Mitte der Bildschirmmitte am nächsten ist.
+        function nearestToCenter() {
+            const mid = window.innerWidth / 2;
+            let best = 0, bestDist = Infinity;
+            panels.forEach(function (p, i) {
+                const r = p.getBoundingClientRect();
+                const d = Math.abs(r.left + r.width / 2 - mid);
+                if (d < bestDist) { bestDist = d; best = i; }
+            });
+            return best;
+        }
+
+        function center(i, smooth) {
+            panels[i].scrollIntoView({
+                behavior: smooth ? "smooth" : "instant",
+                inline: "center",
+                block: "nearest"
+            });
+            // Beim animierten Scrollen übernimmt der scroll-Listener die
+            // Markierung live; beim Instant-Sprung sofort setzen (kein Flackern).
+            if (!smooth) setCentered(i);
+        }
+
+        // Klick (außer auf Links / aufs bereits zentrierte Panel) zentriert das
+        // angeklickte Panel (animiert).
+        scroller.addEventListener("click", function (e) {
+            if (e.target.closest("a")) return;
+            const panel = e.target.closest(".panel");
+            if (!panel || panel.classList.contains("centered")) return;
+            center(panels.indexOf(panel), true);
+        });
+
+        // Beim Scrollen immer das mittigste Panel opak halten (ohne zu
+        // navigieren) — die seitlichen Panels bleiben transparent.
+        let raf = null;
+        scroller.addEventListener("scroll", function () {
+            if (raf) return;
+            raf = requestAnimationFrame(function () {
+                raf = null;
+                setCentered(nearestToCenter());
+            });
+        });
+
+        // Einstieg per Anker bestimmen.
+        function initFromHash() {
+            const id = (location.hash || "").slice(1);
+            const target = id ? document.getElementById(id) : null;
+            const i = target ? panels.indexOf(target) : -1;
+            center(i >= 0 ? i : 0, false);
+        }
+
+        window.addEventListener("hashchange", initFromHash);
+        window.addEventListener("load", initFromHash);
+    </script>
+</body>
+
+</html>
