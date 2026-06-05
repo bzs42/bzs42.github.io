@@ -18,7 +18,6 @@
             --glyph-teal-deep: #0c2c33;
             --text-color: #aee9f0;
             --accent-color: #7ff0ff;
-            --link-color: #6fd4e6;
 
             /* technisches Blau für die Verbindungs-Knoten */
             --tech-blue: #183BF0;
@@ -60,7 +59,7 @@
             pointer-events: none;
         }
 
-        .sidebar .return {
+        .sidebar a {
             pointer-events: auto;
         }
 
@@ -81,9 +80,21 @@
             padding: 7px 12px;
         }
 
+        /* Breadcrumb-Box (bzs42 -> Seiten-Root, artwork -> Galerie-Index):
+           bleibt im Cyan-Theme der Seite; Links unterstrichen. */
         .title .seg1 {
             color: var(--glyph-cyan);
             background: var(--glyph-teal-deep);
+        }
+
+        .title .seg1 a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .title .seg1 a:hover {
+            color: #ffffff;
         }
 
         .title .seg2 {
@@ -96,19 +107,6 @@
             color: var(--glyph-cyan);
             background: #06181c;
             text-shadow: 0 0 10px rgba(127, 240, 255, 0.8);
-        }
-
-        .return {
-            display: inline-block;
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-
-        .return:hover {
-            color: var(--accent-color);
         }
 
         /* --- 3. BÜHNE: 3 SPALTEN, AM UNTEREN RAND AUSGERICHTET --- */
@@ -273,9 +271,8 @@
 <body class="terminal-hintergrund">
 
     <aside class="sidebar">
-        <a class="return" href="../index.html">← return</a>
         <h1 class="title">
-            <div class="seg seg1">bzs::artwork</div>
+            <div class="seg seg1"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></div>
             <div class="seg seg2">.Ancient Cubes</div>
             <div class="seg seg3">ᚢᛈᛞᛉ</div>
         </h1>

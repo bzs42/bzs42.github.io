@@ -27,7 +27,6 @@
             /* die Metalldrähte: kühles Silber (Sekundär-Text) */
             --wire: #c9ced3;
 
-            --link-color: #536dfe;
             --transition-speed: 0.7s;
         }
 
@@ -143,21 +142,22 @@
             padding-left: clamp(12px, 1vw, 18px);
         }
 
-        footer {
-            flex: 0 0 auto;
-            padding-top: clamp(8px, 1.2vh, 18px);
+        /* Breadcrumb: bzs42 -> Seiten-Root, artwork -> Galerie-Index. Erbt die
+           Kicker-Typografie (Monospace/Versalien), aber gelb (inkl. Doppelpunkt)
+           und größer — bleibt kleiner als der Werkname (h1). Links unterstrichen. */
+        .crumbs {
+            font-size: clamp(1rem, 1.6vw, 1.5rem);
+            color: #FBA90A;
         }
 
-        .return {
-            display: inline-block;
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: bold;
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
             transition: color 0.3s ease;
         }
 
-        .return:hover {
-            color: var(--bloom);
+        .crumbs a:hover {
+            color: var(--wire);
         }
 
         /* --- 3. RECHTE SPALTE: BILD, KLICK WECHSELT DURCH ---
@@ -261,7 +261,7 @@
 
     <section class="info">
         <div class="heading">
-            <div class="kicker">bzs::artwork</div>
+            <nav class="kicker crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
             <h1><span class="ns">::Xenobotanix.</span>Astrobloom</h1>
         </div>
 
@@ -297,10 +297,6 @@
                 einen Weg, selbst zwischen den Sternen.
             </p>
         </div>
-
-        <footer>
-            <a class="return" href="../index.html">← return</a>
-        </footer>
     </section>
 
     <section class="viewer" id="viewer" title="Klick wechselt das Bild">

@@ -60,21 +60,24 @@
             flex: 0 0 auto;
             height: 100vh;
             scroll-snap-align: center;
-            /* seitliche Panels: abgedunkelt und anklickbar (zentrieren) */
-            opacity: 0.35;
+            /* seitliche Panels: leicht abgedunkelt und anklickbar (zentrieren);
+               sie pulsieren sanft als Hinweis, dass man dort klicken kann */
+            opacity: 0.5;
             cursor: pointer;
             transition: opacity 0.4s ease;
+            animation: panel-pulse 2.4s ease-in-out infinite;
         }
 
-        /* das zentrierte Panel: voll sichtbar und nicht „anklickbar" */
+        /* das zentrierte Panel: voll sichtbar, statisch, nicht „anklickbar" */
         .panel.centered {
             opacity: 1;
             cursor: default;
+            animation: none;
         }
 
-        /* Links innerhalb eines Panels bleiben immer anklickbar */
-        .panel .return {
-            cursor: pointer;
+        @keyframes panel-pulse {
+            0%, 100% { opacity: 0.45; }
+            50% { opacity: 0.62; }
         }
 
         /* --- 3. GROSSES BILD: volle Höhe, Breite folgt (Bilder sind quadratisch) --- */
@@ -117,17 +120,25 @@
             color: var(--accent-color);
         }
 
-        .return {
-            display: inline-block;
-            margin-top: 12px;
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: bold;
+        /* Breadcrumb: bzs42 -> Seiten-Root, artwork -> Galerie-Index.
+           cursor: pointer, damit die Links auch im abgedunkelten Panel
+           (Panel setzt cursor: default) klickbar wirken. */
+        .crumbs {
+            font-size: clamp(0.95rem, 2.1vh, 1.55rem);
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
+            cursor: pointer;
             transition: color 0.3s ease;
         }
 
-        .return:hover {
-            color: var(--accent-color);
+        .crumbs a:hover {
+            color: var(--text-color);
         }
 
         /* Das 2x2-Grid füllt die verbleibende Höhe der Spalte. */
@@ -156,8 +167,8 @@
         <!-- ============ Revelation I (2021-01) ============ -->
         <section class="panel overview" id="rev1">
             <div class="head">
-                <h2 class="overview-title"><span class="prefix">bzs::artwork::Xenobotanix</span> .Revelation I</h2>
-                <a class="return" href="../index.html">← return</a>
+                <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+                <h2 class="overview-title"><span class="prefix">::Xenobotanix.</span>Revelation I</h2>
             </div>
             <div class="thumbs">
                 <img src="2021-01-01_2160.webp" alt="Revelation I — 1" loading="lazy" />
@@ -174,8 +185,8 @@
         <!-- ============ Revelation II (2021-04) ============ -->
         <section class="panel overview" id="rev2">
             <div class="head">
-                <h2 class="overview-title"><span class="prefix">bzs::artwork::Xenobotanix</span> .Revelation II</h2>
-                <a class="return" href="../index.html">← return</a>
+                <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+                <h2 class="overview-title"><span class="prefix">::Xenobotanix.</span>Revelation II</h2>
             </div>
             <div class="thumbs">
                 <img src="2021-04-01_2160.webp" alt="Revelation II — 1" loading="lazy" />

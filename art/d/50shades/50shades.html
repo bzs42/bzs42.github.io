@@ -38,8 +38,7 @@
         }
 
         /* --- 2. HEADER & FOOTER --- */
-        header,
-        footer {
+        header {
             flex: 0 0 auto;
             text-align: right;
             overflow: hidden;
@@ -54,20 +53,24 @@
             color: var(--text-color);
         }
 
-        h1 .prefix {
+        /* Breadcrumb: bzs42 -> Seiten-Root, artwork -> Galerie-Index.
+           Gelb (inkl. Doppelpunkt), größer als zuvor, aber kleiner als der
+           Werkname (h1, 2.5rem). Links unterstrichen als Link-Hinweis. */
+        .crumbs {
+            font-size: 1.6rem;
+            font-weight: bold;
             color: var(--accent-color);
+            margin-bottom: 2px;
         }
 
-        .return {
-            display: inline-block;
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: bold;
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
             transition: color 0.3s ease;
         }
 
-        .return:hover {
-            color: var(--accent-color);
+        .crumbs a:hover {
+            color: var(--text-color);
         }
 
         /* --- 3. GALLERY LAYOUT (FLEXBOX) --- */
@@ -119,7 +122,6 @@
 
         /* --- 4. MODUS: TITEL VERSTECKT --- */
         body.titles-hidden header,
-        body.titles-hidden footer,
         body.titles-hidden figcaption {
             max-height: 0;
             opacity: 0;
@@ -134,7 +136,8 @@
 <body>
 
     <header>
-        <h1><span class="prefix">bzs42::artwork.</span>50 Shades of Purple - Light Fever</h1>
+        <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+        <h1>.50 Shades of Purple - Light Fever</h1>
     </header>
 
     <div class="gallery">
@@ -175,11 +178,6 @@
             </figure>
         </div>
     </div>
-
-
-    <footer>
-        <a class="return" href="../index.html">← return</a>
-    </footer>
 
     <script>
         // Titles, header and footer start visible, fade out after 3s of
