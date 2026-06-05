@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bzs42 — Impressum</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0d0d;
+            color: #d4d4d4;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: clamp(24px, 5vw, 64px);
+            display: flex;
+            justify-content: center;
+        }
+
+        main {
+            width: 100%;
+            max-width: 760px;
+        }
+
+        h1 {
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
+            color: #FBA90A;
+            margin-bottom: 1.2em;
+        }
+
+        h2 {
+            font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+            color: #FBA90A;
+            font-weight: 600;
+            margin: 1.8em 0 0.5em;
+        }
+
+        p {
+            margin-bottom: 0.6em;
+        }
+
+        a:link,
+        a:visited {
+            color: #536DFE;
+            text-decoration: none;
+        }
+
+        a:hover,
+        a:focus {
+            color: #FBA90A;
+            text-decoration: underline;
+            outline: none;
+        }
+
+        .muted {
+            color: #8a8a8a;
+            font-size: 0.85em;
+        }
+
+        .apps a {
+            display: inline-block;
+            margin-right: 1.4em;
+        }
+
+        footer {
+            margin-top: 3em;
+        }
+
+        .return {
+            color: #536DFE;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .return:hover {
+            color: #FBA90A;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Impressum</h1>
+
+        <!-- Pflichtangaben gemäß § 5 DDG (Digitale-Dienste-Gesetz). Apps im
+             App Store / Play Store gelten als geschäftsmäßiges Angebot, daher
+             ist eine ladungsfähige Anschrift erforderlich. Platzhalter unten
+             bitte durch deine echten Daten ersetzen. -->
+        <h2>Angaben gemäß § 5 DDG</h2>
+        <p>
+            [Dein vollständiger Name]<br />
+            [Straße und Hausnummer]<br />
+            [PLZ Ort]<br />
+            Deutschland
+        </p>
+
+        <h2>Kontakt</h2>
+        <p>
+            E-Mail: <a href="mailto:ekleheb@gmail.com">ekleheb@gmail.com</a><br />
+            <span class="muted">Telefon: [optional]</span>
+        </p>
+
+        <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+        <p>
+            [Dein vollständiger Name]<br />
+            [Anschrift wie oben]
+        </p>
+
+        <!-- Hier später die Store-Links eintragen und die Zeilen aktivieren. -->
+        <h2>Apps</h2>
+        <p class="apps">
+            <!-- <a href="PLAY_STORE_URL">Google Play Store</a> -->
+            <!-- <a href="APP_STORE_URL">Apple App Store</a> -->
+            <span class="muted">Links zu den Apps folgen.</span>
+        </p>
+
+        <h2>Urheberrecht</h2>
+        <p>
+            © <span id="year"></span> [Dein Name] — alle Rechte vorbehalten.
+        </p>
+        <p>
+            Sämtliche auf dieser Website veröffentlichten Werke, Bilder und
+            Inhalte unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
+            Bearbeitung, Verbreitung oder Veröffentlichung — auch auszugsweise —
+            ist ohne ausdrückliche vorherige schriftliche Zustimmung des Urhebers
+            nicht gestattet. Für eine Nutzung wende dich bitte vorab per E-Mail
+            an die oben genannte Adresse.
+        </p>
+
+        <h2>Haftung für Inhalte</h2>
+        <p>
+            Als Diensteanbieter bin ich gemäß § 7 Abs. 1 DDG für eigene Inhalte
+            auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach
+            §§ 8 bis 10 DDG bin ich als Diensteanbieter jedoch nicht verpflichtet,
+            übermittelte oder gespeicherte fremde Informationen zu überwachen oder
+            nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit
+            hinweisen.
+        </p>
+
+        <h2>Haftung für Links</h2>
+        <p>
+            Dieses Angebot enthält ggf. Links zu externen Websites Dritter, auf
+            deren Inhalte ich keinen Einfluss habe. Deshalb kann ich für diese
+            fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der
+            verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der
+            Seiten verantwortlich.
+        </p>
+
+        <footer>
+            <a class="return" href="index.html">← return</a>
+        </footer>
+    </main>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>

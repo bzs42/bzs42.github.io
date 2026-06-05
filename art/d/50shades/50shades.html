@@ -66,11 +66,8 @@
             transition: color 0.3s ease;
         }
 
-        .return:hover,
-        .return:focus {
-            /* Focus für Tastaturnutzer hinzugefügt */
+        .return:hover {
             color: var(--accent-color);
-            outline: none;
         }
 
         /* --- 3. GALLERY LAYOUT (FLEXBOX) --- */
@@ -185,9 +182,9 @@
     </footer>
 
     <script>
-        // Titles, header and footer start visible, fade out after 2s of
-        // stillness, and come back on any mouse movement (which also restarts
-        // the 2s countdown).
+        // Titles, header and footer start visible, fade out after 3s of
+        // stillness, and come back on mouse movement (which also restarts
+        // the countdown).
         let hideTimer;
 
         function hideTitles() {
@@ -203,7 +200,6 @@
         hideTimer = setTimeout(hideTitles, 3000);
         window.addEventListener("mousemove", showTitles);
         window.addEventListener("touchstart", showTitles);
-        window.addEventListener("keydown", showTitles);
     </script>
 </body>
 
