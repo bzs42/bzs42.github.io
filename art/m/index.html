@@ -3,103 +3,314 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>bzs::art</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>bzs42::artwork</title>
     <style>
+        :root {
+            --bg: #000000;
+            --text: #f0f0f0;
+            --accent: #FBA90A;
+            --dim: #9a9a9a;
+        }
+
         * {
-            padding: 0;
             margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
+        html,
         body {
-            background-color: #342609;
-            color: #FBE9C0;
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-            min-height: 100vh;
-            padding: 16px;
+            height: 100%;
         }
 
-        .content {
+        html {
+            background: var(--bg);
+            /* Vertikaler Snap-Scroller: jede Section rastet mit ihrem Header oben ein */
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            color: var(--text);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* --- Eine Section pro Kunstwerk --- */
+        .work {
+            min-height: 100vh;
+            scroll-snap-align: start;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: center;
             gap: 16px;
+            padding: 18px 14px;
         }
 
-        .intro {
-            border-radius: 20px;
-            border: 2px solid #D4DAF7;
-            color: #342609;
-            background: #FBA90A;
-            text-align: center;
-            padding: 20px;
-            max-width: 420px;
-            width: 100%;
+        .head {
+            flex: 0 0 auto;
         }
 
-        .intro h1 {
-            font-size: 44px;
-            margin: 8px 0;
+        /* Kopf: bzs42::artwork — bzs42 -> Site-Root, artwork = aktuelle Galerie (Klartext) */
+        .crumb {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--accent);
         }
 
-        .intro p {
-            font-size: 20px;
-            margin: 6px 0;
+        .crumb a {
+            color: inherit;
+            text-decoration: underline;
         }
 
-        .pic {
-            width: 100%;
-            max-width: 420px;
+        /* Werktitel, eine Zeile darunter, eine Stufe größer als der Kopf */
+        .wtitle {
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 1.7rem;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text);
+            text-decoration: none;
         }
 
-        .pic img {
-            width: 100%;
+        .wtitle .prefix {
+            color: var(--accent);
+        }
+
+        /* Repräsentatives Bild, full-width, quadratisch */
+        .shotlink {
             display: block;
-            border-radius: 20px;
-            border: 2px solid #183BF0;
+            flex: 0 1 auto;
         }
 
-        a:link,
-        a:visited,
-        a:active,
-        a:hover {
-            color: #183BF0;
-            font-weight: bolder;
-        }
-
-        .switch {
+        .shot {
             display: block;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            opacity: .85;
+            width: 100%;
+            height: auto;
         }
 
-        .switch:link,
-        .switch:visited {
-            color: #FBA90A;
+        /* Beschreibung (nur wo auf dem Desktop vorhanden) */
+        .desc {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .desc .tagline {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .desc .material {
+            font-size: 0.9rem;
+            color: var(--dim);
+            line-height: 1.5;
+        }
+
+        .desc .material .lbl {
+            color: var(--text);
+            font-family: "Consolas", "Roboto Mono", monospace;
+            letter-spacing: 0.06em;
+        }
+
+        .desc p.body {
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* --- Einlauf-Animation: Kopf nach oben, Titel gegenläufig nach unten,
+               jeweils zurück zur Grundlinie. Spielt bei jedem Eintreten neu. --- */
+        @keyframes nudgeUp {
+            0% { transform: translateY(0); }
+            45% { transform: translateY(-28px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes nudgeDown {
+            0% { transform: translateY(0); }
+            45% { transform: translateY(28px); }
+            100% { transform: translateY(0); }
+        }
+
+        .work.in .crumb {
+            animation: nudgeUp 1.2s ease;
+        }
+
+        .work.in .wtitle {
+            animation: nudgeDown 1.2s ease;
+        }
+
+        /* --- Scroll-Indikator: zeigt an, dass weiter unten (bzw. oben) noch
+               Inhalt folgt. Kleiner Chevron, sanft auf-/abwippend. --- */
+        .scroll-ind {
+            position: fixed;
+            left: 50%;
+            bottom: 16px;
+            z-index: 20;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            cursor: pointer;
+            opacity: 0.85;
+            filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.7));
+            animation: bobDown 1.5s ease-in-out infinite;
+        }
+
+        .scroll-ind .chev {
+            display: block;
+            width: 13px;
+            height: 13px;
+            border-right: 3px solid currentColor;
+            border-bottom: 3px solid currentColor;
+            transform: rotate(45deg);
+            margin-top: -5px;
+        }
+
+        /* letzte Section: Pfeil + Wippen kehren sich um (nach oben) */
+        .scroll-ind.up {
+            animation: bobUp 1.5s ease-in-out infinite;
+        }
+
+        .scroll-ind.up .chev {
+            transform: rotate(-135deg);
+            margin-top: 5px;
+        }
+
+        @keyframes bobDown {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(7px); }
+        }
+
+        @keyframes bobUp {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-7px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .work.in .crumb,
+            .work.in .wtitle { animation: none; }
+            .scroll-ind { animation: none; transform: translateX(-50%); }
         }
     </style>
 </head>
 
 <body>
-    <div class="content">
-        <div class="intro">
-            <p><a href="../../index.html">bzs</a></p>
-            <h1>::art</h1>
-            <p><i>what is it all about?</i></p>
-            <p>can something come from nothing?</p>
-            <p>...it takes a form, goes through a form and leaves the form...</p>
-            <p><i>it's all about flow</i></p>
+
+    <section class="work">
+        <div class="head">
+            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle" href="50shades/50shades.html">.50 Shades of Purple - Light Fever</a>
         </div>
+        <a class="shotlink" href="50shades/50shades.html">
+            <img class="shot" src="50shades/20240315_163053_edited_956.webp"
+                alt=".50 Shades of Purple - Light Fever" />
+        </a>
+    </section>
 
-        <a class="pic" href="2021-04/2021-04.html"><img src="2021-04-01_400x400.jpg" alt="revelation II" /></a>
-        <a class="pic" href="2021-02/2021-02.html"><img src="2021-02-02_400x400.jpg" alt="ancient cube" /></a>
-        <a class="pic" href="2021-01/2021-01.html"><img src="2021-01-04_400x400.jpg" alt="revelation I" /></a>
-    </div>
+    <section class="work">
+        <div class="head">
+            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle" href="ancientCubes/ancientCubes.html">.Ancient Cubes</a>
+        </div>
+        <a class="shotlink" href="ancientCubes/ancientCubes.html">
+            <img class="shot" src="ancientCubes/2021-02-01_1290.webp" alt=".Ancient Cubes" />
+        </a>
+    </section>
 
-    <a class="switch" href="../d/index.html">force desktop version</a>
+    <section class="work">
+        <div class="head">
+            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle" href="revelation1/revelation1.html"><span class="prefix">::zenobotanis.</span>Revelation I</a>
+        </div>
+        <a class="shotlink" href="revelation1/revelation1.html">
+            <img class="shot" src="revelation1/2021-01-01_1290.webp" alt="::zenobotanis.Revelation I" />
+        </a>
+    </section>
+
+    <section class="work">
+        <div class="head">
+            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle" href="revelation2/revelation2.html"><span class="prefix">::zenobotanis.</span>Revelation II</a>
+        </div>
+        <a class="shotlink" href="revelation2/revelation2.html">
+            <img class="shot" src="revelation2/2021-04-01_1290.webp" alt="::zenobotanis.Revelation II" />
+        </a>
+    </section>
+
+    <section class="work">
+        <div class="head">
+            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle" href="astrobloom/astrobloom.html"><span class="prefix">::zenobotanis.</span>Astrobloom</a>
+        </div>
+        <a class="shotlink" href="astrobloom/astrobloom.html">
+            <img class="shot" src="astrobloom/P_20260501_190841_1290.webp" alt="::zenobotanis.Astrobloom" />
+        </a>
+        <div class="desc">
+            <p class="tagline">Astrobloom — Signale aus dem Regolith</p>
+            <p class="material">
+                <span class="lbl">Material:</span>
+                Keramik (Krakelee-Glasur), Metalldraht, Acrylglas
+            </p>
+            <p class="body">
+                Dieses Werk ist eine visuelle Symphonie des Bio-Futurismus. Es fängt den
+                Moment ein, in dem die Grenzen zwischen organischer Schöpfung und
+                technologischer Evolution verschwimmen.
+            </p>
+            <p class="body">
+                Aus einer rauen, tief rissigen Keramikbasis – einer Metapher für den
+                unbarmherzigen, ausgetrockneten Boden eines fremden Planeten – bricht
+                unaufhaltsam neues Leben hervor. Filigrane, schwebende Metalldrähte winden
+                sich der Schwerelosigkeit entgegen. Sie wirken wie feine Antennen, die im
+                ewigen Vakuum des Kosmos nach Signalen suchen. An ihren Enden erblühen
+                transluzente, intensiv rote Scheiben. Sie imitieren die Ästhetik
+                außerirdischer Laboratorien, in denen Pflanzen unter künstlichem Licht
+                gedeihen. Die feinen Metallspiralen auf diesen synthetischen Blüten
+                symbolisieren das ewige Streben der Natur nach Geometrie und Ordnung –
+                selbst in den lebensfeindlichsten Tiefen des Universums.
+            </p>
+        </div>
+    </section>
+
+    <div class="scroll-ind" id="scrollInd" aria-hidden="true"><span class="chev"></span></div>
+
+    <script>
+        // Beim Eintreten einer Section in den Viewport die Einlauf-Animation
+        // auslösen (Kopf hoch, Titel runter, je zurück). Klasse beim Verlassen
+        // entfernen, damit der Effekt bei erneutem Eintreten neu spielt.
+        const works = Array.from(document.querySelectorAll(".work"));
+        const ind = document.getElementById("scrollInd");
+        let current = 0;
+
+        const io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                e.target.classList.toggle("in", e.isIntersecting);
+                if (e.isIntersecting) {
+                    current = works.indexOf(e.target);
+                    // Auf der letzten Section zeigt der Indikator nach oben.
+                    ind.classList.toggle("up", current === works.length - 1);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        works.forEach(function (s) { io.observe(s); });
+
+        // Tap auf den Indikator: zur nächsten Section bzw. (auf der letzten)
+        // zurück nach ganz oben.
+        ind.addEventListener("click", function () {
+            const target = current >= works.length - 1 ? works[0] : works[current + 1];
+            target.scrollIntoView({ behavior: "smooth" });
+        });
+    </script>
 </body>
 
 </html>

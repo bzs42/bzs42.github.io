@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>bzs42::artwork — Revelation I</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --accent: #FBA90A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            overflow: hidden;
+        }
+
+        .crumbs {
+            flex: 0 0 auto;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        .wtitle {
+            flex: 0 0 auto;
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .wtitle .prefix {
+            color: var(--accent);
+        }
+
+        .stage {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .featured {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .thumbs {
+            flex: 0 0 auto;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #444 transparent;
+        }
+
+        .thumb {
+            flex: 0 0 auto;
+            height: 76px;
+            width: 76px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+            opacity: 0.55;
+            border: 2px solid transparent;
+            transition: opacity 0.25s ease, border-color 0.25s ease;
+        }
+
+        .thumb.active {
+            opacity: 1;
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+    <h1 class="wtitle"><span class="prefix">::zenobotanis.</span>Revelation I</h1>
+
+    <div class="stage">
+        <img class="featured" id="featured" src="2021-01-01_1290.webp" alt="Revelation I — 1" />
+    </div>
+
+    <div class="thumbs" id="thumbs">
+        <img class="thumb active" src="2021-01-01_400.webp" data-full="2021-01-01_1290.webp" alt="Revelation I — 1" />
+        <img class="thumb" src="2021-01-02_400.webp" data-full="2021-01-02_1290.webp" alt="Revelation I — 2" />
+        <img class="thumb" src="2021-01-04_400.webp" data-full="2021-01-04_1290.webp" alt="Revelation I — 3" />
+        <img class="thumb" src="2021-01-06_400.webp" data-full="2021-01-06_1290.webp" alt="Revelation I — 4" />
+    </div>
+
+    <script>
+        // Tap auf ein Thumbnail tauscht das große Bild und markiert den aktiven Thumb.
+        const featured = document.getElementById("featured");
+        const thumbs = Array.from(document.querySelectorAll(".thumb"));
+
+        thumbs.forEach(function (t) {
+            t.addEventListener("click", function () {
+                featured.src = t.dataset.full;
+                featured.alt = t.alt;
+                thumbs.forEach(function (x) { x.classList.remove("active"); });
+                t.classList.add("active");
+            });
+        });
+    </script>
+</body>
+
+</html>

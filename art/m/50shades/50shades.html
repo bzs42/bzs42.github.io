@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>bzs42::artwork — 50 Shades of Purple</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --accent: #fba90a;
+            --dim: #9a9a9a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            overflow: hidden;
+        }
+
+        /* Breadcrumb: bzs42 -> Site-Root, artwork -> Galerie-Index. Unterstrichen. */
+        .crumbs {
+            flex: 0 0 auto;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        /* Werktitel, eine Stufe größer als die Breadcrumb */
+        .wtitle {
+            flex: 0 0 auto;
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        /* Großes Bild, füllt den Restraum */
+        .stage {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .featured {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .caption {
+            flex: 0 0 auto;
+            text-align: center;
+            font-size: 1rem;
+            color: var(--dim);
+            min-height: 1.3em;
+        }
+
+        /* Untere, horizontal scrollbare Thumb-Leiste */
+        .thumbs {
+            flex: 0 0 auto;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #444 transparent;
+        }
+
+        .thumb {
+            flex: 0 0 auto;
+            height: 76px;
+            width: 76px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+            opacity: 0.55;
+            border: 2px solid transparent;
+            transition: opacity 0.25s ease, border-color 0.25s ease;
+        }
+
+        .thumb.active {
+            opacity: 1;
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+    <h1 class="wtitle">.50 Shades of Purple - Light Fever</h1>
+
+    <div class="stage">
+        <img class="featured" id="featured" src="20240315_163053_edited_956.webp"
+            alt="Light Fever — Immersive Ego Zentrifuge" />
+    </div>
+    <div class="caption" id="caption">Immersive Ego Zentrifuge</div>
+
+    <div class="thumbs" id="thumbs">
+        <img class="thumb active" src="20240315_163053_edited_400.webp" data-full="20240315_163053_edited_956.webp" data-caption="Immersive Ego Zentrifuge" alt="Light Fever — Immersive Ego Zentrifuge" />
+        <img class="thumb" src="20240511_163443_edited_400.webp" data-full="20240511_163443_edited_956.webp" data-caption="Transit" alt="Light Fever — Transit" />
+        <img class="thumb" src="P_20250125_182638_edited_400.webp" data-full="P_20250125_182638_edited_956.webp" data-caption="Interferenz" alt="Light Fever — Interferenz" />
+        <img class="thumb" src="P_20250703_000143_edited_400.webp" data-full="P_20250703_000143_edited_956.webp" data-caption="Lichtstrom" alt="Light Fever — Lichtstrom" />
+        <img class="thumb" src="PSX_20250918_220054_1_400.webp" data-full="PSX_20250918_220054_1_956.webp" data-caption="Ekstase" alt="Light Fever — Ekstase" />
+        <img class="thumb" src="P_20250823_211758_edited_400.webp" data-full="P_20250823_211758_edited_956.webp" data-caption="Orbit" alt="Light Fever — Orbit" />
+        <img class="thumb" src="P_20251220_111434_edited_400.webp" data-full="P_20251220_111434_edited_956.webp" data-caption="Inversion" alt="Light Fever — Inversion" />
+        <img class="thumb" src="P_20251231_235720_edited_400.webp" data-full="P_20251231_235720_edited_956.webp" data-caption="Supernova" alt="Light Fever — Supernova" />
+    </div>
+
+    <script>
+        // Tap auf ein Thumbnail tauscht das große Bild (und die Caption) und
+        // markiert den aktiven Thumb.
+        const featured = document.getElementById("featured");
+        const caption = document.getElementById("caption");
+        const thumbs = Array.from(document.querySelectorAll(".thumb"));
+
+        thumbs.forEach(function (t) {
+            t.addEventListener("click", function () {
+                featured.src = t.dataset.full;
+                featured.alt = t.alt;
+                if (caption) caption.textContent = t.dataset.caption || "";
+                thumbs.forEach(function (x) { x.classList.remove("active"); });
+                t.classList.add("active");
+            });
+        });
+    </script>
+</body>
+
+</html>
