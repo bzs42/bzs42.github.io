@@ -24,8 +24,8 @@ ARTIST="bzs42"
 YEAR="$(date +%Y)"
 COPYRIGHT="© ${YEAR} ${ARTIST}. Alle Rechte vorbehalten. / All rights reserved."
 USAGE_TERMS="Nutzung, Vervielfältigung und Veröffentlichung nur mit ausdrücklicher vorheriger Genehmigung des Urhebers."
-WEB_STATEMENT="https://bzs42.github.io/impressum.html"
-CONTACT="ekleheb@gmail.com"
+WEB_STATEMENT="https://www.bzs42.de/impressum.html"
+CONTACT="bezetes42@gmail.com"
 
 # Welche Endungen als Bild gelten (case-insensitive).
 EXTENSIONS=(jpg jpeg png webp)
