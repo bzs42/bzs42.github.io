@@ -46,13 +46,13 @@
             text-align: right;
             overflow: hidden;
             opacity: 1;
-            max-height: 100px;
+            /*max-height: 100px;*/
             /* Definiertes Maximum für saubere Transition */
             transition: max-height var(--transition-speed) ease, opacity var(--fade-speed) ease;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 10vh, 4rem);
             color: var(--text-color);
         }
 
@@ -164,12 +164,12 @@
         </div>
         <div class="gallery-row">
             <figure>
-                <img src="P_20250823_211758_edited_956.webp" alt="Light Fever — 23.08.2025" />
-                <figcaption>Orbit</figcaption>
-            </figure>
-            <figure>
                 <img src="PSX_20250918_220054_1_956.webp" alt="Light Fever — 18.09.2025" />
                 <figcaption>Ekstase</figcaption>
+            </figure>
+            <figure>
+                <img src="P_20250823_211758_edited_956.webp" alt="Light Fever — 23.08.2025" />
+                <figcaption>Orbit</figcaption>
             </figure>
             <figure>
                 <img src="P_20251220_111434_edited_956.webp" alt="Light Fever — 20.12.2025" />

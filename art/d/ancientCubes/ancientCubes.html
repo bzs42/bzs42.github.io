@@ -83,6 +83,11 @@
         .title .seg {
             white-space: nowrap;
             padding: 7px 12px;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
         }
 
         /* Breadcrumb-Box (bzs42 -> Seiten-Root, artwork -> Galerie-Index):
@@ -142,6 +147,11 @@
             background-repeat: no-repeat;
             background-color: rgba(0, 0, 0, 0.2);
             visibility: hidden;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
         }
 
         .zoom.active {
@@ -206,6 +216,11 @@
             max-width: 100%;
             object-fit: contain;
             display: block;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
         }
 
         /* Thumb-Host: relativer Anker pro Thumbnail, damit der Kreis
@@ -251,10 +266,19 @@
             display: block;
             cursor: pointer;
             transition: opacity var(--transition-speed) ease, filter 0.3s ease;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
         }
 
         .thumb:hover {
             filter: brightness(1.12);
+            /* verstärktes Glühen beim Hover */
+            box-shadow:
+                0 0 20px var(--tech-blue),
+                0 0 12px rgba(127, 240, 255, 1);
         }
 
         .terminal-hintergrund {

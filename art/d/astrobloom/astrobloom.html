@@ -104,7 +104,7 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end;
             gap: clamp(10px, 1.4vh, 22px);
         }
 
@@ -135,7 +135,7 @@
         }
 
         /* der kraftvolle Schlusssatz – als Glut-Signal hervorgehoben */
-        .prose p.closer {
+        p.closer {
             font-size: clamp(1rem, 1.35vw, 1.32rem);
             line-height: 1.45;
             font-weight: 600;
@@ -257,6 +257,25 @@
             box-shadow: 0 0 12px var(--bloom-glow);
             transform: scale(1.1);
         }
+
+        /* Intro-Hinweis beim Öffnen: die Punkte erscheinen kurz und pulsieren
+           sanft (zwei Takte), danach blendet die Steuerung wieder aus. */
+        .dots.intro .dot {
+            animation: dot-hint 1.1s ease-in-out 2;
+        }
+
+        @keyframes dot-hint {
+            0%, 100% {
+                transform: scale(1);
+                background: transparent;
+                box-shadow: 0 0 0 var(--bloom-glow);
+            }
+            50% {
+                transform: scale(1.18);
+                background: var(--bloom-glow);
+                box-shadow: 0 0 12px var(--bloom-glow);
+            }
+        }
     </style>
 </head>
 
@@ -266,16 +285,19 @@
         <div class="heading">
             <nav class="kicker crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
             <h1><span class="ns">::zenobotanis.</span>Astrobloom</h1>
+            <p class="closer">
+                Ein kraftvolles Monument der Astrobionik.
+            </p>
         </div>
 
         <div class="prose">
-            <p class="tagline">ASTROBLOOM — Signale aus dem Regolith</p>
+
+            <p class="tagline">Astrobloom — Signale aus dem Regolith</p>
 
             <p class="material">
                 <span class="lbl">Material:</span>
                 Keramik (Krakelee-Glasur), Metalldraht, Acrylglas
             </p>
-
             <p class="body">
                 Dieses Werk ist eine visuelle Symphonie des Bio-Futurismus. Es fängt den
                 Moment ein, in dem die Grenzen zwischen organischer Schöpfung und
@@ -295,10 +317,6 @@
                 selbst in den lebensfeindlichsten Tiefen des Universums.
             </p>
 
-            <p class="closer">
-                Ein kraftvolles Monument der Astrobionik, das uns zeigt: Das Leben findet
-                einen Weg, selbst zwischen den Sternen.
-            </p>
         </div>
     </section>
 
@@ -360,11 +378,25 @@
         let hideTimer;
 
         function revealControls() {
+            // Maus-Interaktion übernimmt: laufenden Intro-Puls beenden.
+            dotsEl.classList.remove("intro");
             controls.classList.add("visible");
             clearTimeout(hideTimer);
             hideTimer = setTimeout(function () {
                 controls.classList.remove("visible");
             }, 2000);
+        }
+
+        // Beim Öffnen die Punkte einmal zeigen und sanft pulsieren lassen,
+        // danach wieder ausblenden, damit das Werk den Raum behält.
+        function introHint() {
+            dotsEl.classList.add("intro");
+            controls.classList.add("visible");
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(function () {
+                dotsEl.classList.remove("intro");
+                controls.classList.remove("visible");
+            }, 2400);
         }
 
         viewer.addEventListener("mousemove", revealControls);
@@ -376,6 +408,7 @@
         });
 
         show(0);
+        introHint();
     </script>
 </body>
 

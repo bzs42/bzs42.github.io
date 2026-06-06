@@ -64,24 +64,53 @@
             flex: 0 0 auto;
             height: 100%;
             scroll-snap-align: center;
-            /* seitliche Panels: leicht abgedunkelt und anklickbar (zentrieren);
-               sie pulsieren sanft als Hinweis, dass man dort klicken kann */
-            opacity: 0.5;
+            /* seitliche Panels: dezent abgedunkelt und anklickbar (zentrieren) */
+            opacity: 0.2;
             cursor: pointer;
             transition: opacity 0.4s ease;
-            animation: panel-pulse 2.4s ease-in-out infinite;
         }
 
-        /* das zentrierte Panel: voll sichtbar, statisch, nicht „anklickbar" */
+        /* das zentrierte Panel: voll sichtbar, nicht „anklickbar" */
         .panel.centered {
             opacity: 1;
             cursor: default;
-            animation: none;
         }
 
-        @keyframes panel-pulse {
-            0%, 100% { opacity: 0.10; }
-            50% { opacity: 0.45; }
+        /* --- Navigations-Pfeile: dezente Hinweise, die beim Öffnen und nach
+               jedem Zentrieren kurz aufleuchten/pulsieren und dann verschwinden,
+               damit sie das Betrachten nicht stören --- */
+        .nav-hint {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 40;
+            font-size: clamp(2rem, 6vh, 4rem);
+            font-weight: 300;
+            line-height: 1;
+            color: var(--accent-color);
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            pointer-events: none;
+            user-select: none;
+            padding: 20px;
+        }
+
+        .nav-hint.left { left: 10px; }
+        .nav-hint.right { right: 10px; }
+
+        /* einmaliges Aufleuchten + Pulsieren, endet sichtbar bei 0 */
+        .nav-hint.show {
+            animation: arrow-hint 4s ease-in-out forwards;
+        }
+
+        @keyframes arrow-hint {
+            0%   { opacity: 0; }
+            15%  { opacity: 0.8; }
+            35%  { opacity: 0.25; }
+            55%  { opacity: 0.8; }
+            75%  { opacity: 0.25; }
+            90%  { opacity: 0.7; }
+            100% { opacity: 0; }
         }
 
         /* --- 3. GROSSES BILD: volle Höhe, Breite folgt (Bilder sind quadratisch) --- */
@@ -115,7 +144,7 @@
         }
 
         .overview-title {
-            font-size: clamp(1rem, 2.3vh, 1.7rem);
+            font-size: clamp(1rem, 10vh, 4rem);
             font-weight: 600;
             line-height: 1.35;
         }
@@ -206,6 +235,9 @@
 
     </div>
 
+    <div class="nav-hint left" id="navLeft">&lt;</div>
+    <div class="nav-hint right" id="navRight">&gt;</div>
+
     <script>
         // Horizontaler Voll-Höhe-Scroller mit Panels (Übersicht + Großbilder).
         // - Klick auf ein seitliches Panel zentriert es animiert.
@@ -215,6 +247,19 @@
         //   Übersichtsspalte.
         const scroller = document.getElementById("scroller");
         const panels = Array.from(scroller.querySelectorAll(".panel"));
+        const navHints = [document.getElementById("navLeft"), document.getElementById("navRight")];
+        let lastFlashed = -1;
+
+        // Lässt die Navigations-Pfeile einmal aufleuchten/pulsieren (2s, dann
+        // verschwinden sie via CSS-Animation). Die Animation wird per Reflow
+        // neu gestartet, damit sie bei jedem Zentrieren erneut läuft.
+        function flashArrows() {
+            navHints.forEach(function (a) {
+                a.classList.remove("show");
+                void a.offsetWidth;
+                a.classList.add("show");
+            });
+        }
 
         // Markiert genau ein Panel als zentriert (voll sichtbar, nicht klickbar).
         function setCentered(i) {
@@ -255,15 +300,26 @@
             center(panels.indexOf(panel), true);
         });
 
-        // Beim Scrollen immer das mittigste Panel opak halten (ohne zu
-        // navigieren) — die seitlichen Panels bleiben transparent.
+        // Beim Scrollen immer das mittigste Panel opak halten (live, ohne zu
+        // navigieren). Kommt das Scrollen zur Ruhe und ist ein neues Panel
+        // zentriert, leuchten die Navigations-Pfeile kurz auf.
         let raf = null;
+        let scrollEndTimer = null;
         scroller.addEventListener("scroll", function () {
-            if (raf) return;
-            raf = requestAnimationFrame(function () {
-                raf = null;
-                setCentered(nearestToCenter());
-            });
+            if (!raf) {
+                raf = requestAnimationFrame(function () {
+                    raf = null;
+                    setCentered(nearestToCenter());
+                });
+            }
+            clearTimeout(scrollEndTimer);
+            scrollEndTimer = setTimeout(function () {
+                const i = nearestToCenter();
+                if (i !== lastFlashed) {
+                    lastFlashed = i;
+                    flashArrows();
+                }
+            }, 140);
         });
 
         // Einstieg per Anker bestimmen.
@@ -271,7 +327,11 @@
             const id = (location.hash || "").slice(1);
             const target = id ? document.getElementById(id) : null;
             const i = target ? panels.indexOf(target) : -1;
-            center(i >= 0 ? i : 0, false);
+            const idx = i >= 0 ? i : 0;
+            center(idx, false);
+            // Pfeile beim Öffnen einmal zeigen.
+            lastFlashed = idx;
+            flashArrows();
         }
 
         window.addEventListener("hashchange", initFromHash);
