@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bzs42::artwork</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background-color: black;
+            height: 100%;
+        }
+
+        body {
+            color: white;
+            font-family: "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            /* 10px Safe-Area: schützt die Breadcrumb-Ecke vor Safaris runden
+               Fensterecken und der Fullscreen-Navigations-Hotzone */
+            padding: 10px;
+        }
+
+        header {
+            flex: 0 0 auto;
+            text-align: right;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #FBA90A;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: #FBA90A;
+            font-weight: 400;
+        }
+
+        /* Breadcrumb: bzs42 -> Seiten-Root; "artwork" ist die aktuelle Seite */
+        h1 .home {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        h1 .home:hover {
+            color: #ffffff;
+        }
+
+        /* Nav füllt den restlichen Raum perfekt aus */
+        nav {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            /* Minimaler Abstand zwischen den Reihen verhindert visuelles Flackern */
+        }
+
+        a.row {
+            position: relative;
+            flex: 1 1 0;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            overflow: hidden;
+            font-size: clamp(1.2rem, 5vh, 4rem);
+            font-weight: 600;
+            text-decoration: none;
+            line-height: 1;
+            color: #f0f0f0;
+            transition: color 0.4s ease, font-size 0.5s ease, padding 0.5s ease, flex-grow 0.5s ease;
+        }
+
+        /* In-Row Hintergrund-Ebene */
+        a.row::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), var(--bg);
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        a.row:hover::before {
+            opacity: 1;
+        }
+
+        /* Fullscreen Hintergrund-Ebene */
+        a.row::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), var(--bg);
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        a.row:hover::after {
+            opacity: 1;
+        }
+
+        /* Label-Zentrierung */
+        a.row .label {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            left: 0;
+            transform: translateX(0);
+            transition: left 0.5s ease, transform 0.5s ease;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        a.row:hover {
+            color: #ffffff;
+            font-size: clamp(1.5rem, 6.5vh, 5rem);
+            padding: 0 48px;
+            flex-grow: 3;
+            /* 3 reicht völlig aus für einen dramatischen Effekt ohne Ruckeln */
+        }
+
+        a.row:hover .label {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Optimierter Präfix-Effekt ohne Ruckeln */
+        .label .prefix {
+            color: #FBA90A;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1><a class="home" href="../../index.html">bzs42</a>::artwork</h1>
+    </header>
+
+    <nav>
+        <a class="row" href="50shades/50shades.html" style="--bg: url('50shades.webp');"><span class="label">.50 Shades of Purple - Light Fever</span></a>
+        <a class="row" href="ancientCubes/ancientCubes.html" style="--bg: url('ancientCubes.webp');"><span class="label">.Ancient Cubes</span></a>
+        <a class="row" href="revelation/revelation.html#rev1" style="--bg: url('revel1.webp');"><span class="label"><span class="prefix">::zenobotanis.</span>Revelation I</span></a>
+        <a class="row" href="revelation/revelation.html#rev2" style="--bg: url('revel2.webp');"><span class="label"><span class="prefix">::zenobotanis.</span>Revelation II</span></a>
+        <a class="row" href="astrobloom/astrobloom.html" style="--bg: url('astrobloom.webp');"><span class="label"><span class="prefix">::zenobotanis.</span>Astrobloom</span></a>
+    </nav>
+</body>
+
+</html>

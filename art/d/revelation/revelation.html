@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bzs42::artwork — Revelation</title>
+    <style>
+        /* --- 1. VARIABLEN & RESET --- */
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #FBA90A;
+            --link-color: #536DFE;
+            --gap: 6px;
+            /* Größtmöglicher Panel-Abstand, bei dem das nächste/vorige Panel
+               noch mind. 5vw (5% der Bildschirmbreite) hervorschaut und damit
+               anklickbar bleibt. Seitenraum bei zentriertem Panel = 50vw-50vh,
+               davon 5vw für die sichtbare Nachbarkante reservieren. */
+            --panel-gap: max(8px, calc(45vw - 50vh));
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        body {
+            color: var(--text-color);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            /* 10px Safe-Area: schützt vor Safaris runden Fensterecken und der
+               Fullscreen-Navigations-Hotzone. Die volle-Höhe-Kinder unten
+               nutzen daher height: 100% (= 100vh - 20px) statt 100vh. */
+            padding: 10px;
+        }
+
+        /* --- 2. HORIZONTALER SCROLLER (volle Höhe) --- */
+        .scroller {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: var(--panel-gap);
+            /* seitlicher Freiraum, damit auch das erste/letzte Panel mittig
+               zentriert werden kann (Panels sind quadratisch = 100vh breit) */
+            padding-inline: max(0px, calc(50vw - 50vh));
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #333 #000;
+        }
+
+        .panel {
+            flex: 0 0 auto;
+            height: 100%;
+            scroll-snap-align: center;
+            /* seitliche Panels: dezent abgedunkelt und anklickbar (zentrieren) */
+            opacity: 0.2;
+            cursor: pointer;
+            transition: opacity 0.4s ease;
+        }
+
+        /* das zentrierte Panel: voll sichtbar, nicht „anklickbar" */
+        .panel.centered {
+            opacity: 1;
+            cursor: default;
+        }
+
+        /* --- Navigations-Pfeile: dezente Hinweise, die beim Öffnen und nach
+               jedem Zentrieren kurz aufleuchten/pulsieren und dann verschwinden,
+               damit sie das Betrachten nicht stören --- */
+        .nav-hint {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 40;
+            font-size: clamp(2rem, 6vh, 4rem);
+            font-weight: 300;
+            line-height: 1;
+            color: var(--accent-color);
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            pointer-events: none;
+            user-select: none;
+            padding: 20px;
+        }
+
+        .nav-hint.left { left: 10px; }
+        .nav-hint.right { right: 10px; }
+
+        /* einmaliges Aufleuchten + Pulsieren, endet sichtbar bei 0 */
+        .nav-hint.show {
+            animation: arrow-hint 4s ease-in-out forwards;
+        }
+
+        @keyframes arrow-hint {
+            0%   { opacity: 0; }
+            15%  { opacity: 0.8; }
+            35%  { opacity: 0.25; }
+            55%  { opacity: 0.8; }
+            75%  { opacity: 0.25; }
+            90%  { opacity: 0.7; }
+            100% { opacity: 0; }
+        }
+
+        /* --- 3. GROSSES BILD: volle Höhe, Breite folgt (Bilder sind quadratisch) --- */
+        .shot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shot img {
+            height: 100%;
+            width: auto;
+            /* Breite steht schon vor dem Laden fest (Bilder sind quadratisch)
+               -> kein Layout-Shift, Zentrierung bleibt korrekt */
+            aspect-ratio: 1 / 1;
+            display: block;
+        }
+
+        /* --- 4. ÜBERSICHT: gleiches Format wie ein Einzelbild (quadratisch,
+               volle Höhe), Überschrift oben, darunter das 2x2-Grid --- */
+        .overview {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            gap: 16px;
+        }
+
+        .overview .head {
+            flex: 0 0 auto;
+        }
+
+        .overview-title {
+            font-size: clamp(1rem, 10vh, 4rem);
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .overview-title .prefix {
+            color: var(--accent-color);
+        }
+
+        /* Breadcrumb: bzs42 -> Seiten-Root, artwork -> Galerie-Index.
+           cursor: pointer, damit die Links auch im abgedunkelten Panel
+           (Panel setzt cursor: default) klickbar wirken. */
+        .crumbs {
+            font-size: clamp(0.95rem, 2.1vh, 1.55rem);
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .crumbs a:hover {
+            color: var(--text-color);
+        }
+
+        /* Das 2x2-Grid füllt die verbleibende Höhe der Spalte. */
+        .thumbs {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: var(--gap);
+        }
+
+        .thumbs img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scroller" id="scroller">
+
+        <!-- ============ Revelation I (2021-01) ============ -->
+        <section class="panel overview" id="rev1">
+            <div class="head">
+                <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+                <h2 class="overview-title"><span class="prefix">::zenobotanis.</span>Revelation I</h2>
+            </div>
+            <div class="thumbs">
+                <img src="2021-01-01_2160.webp" alt="Revelation I — 1" loading="lazy" />
+                <img src="2021-01-02_2160.webp" alt="Revelation I — 2" loading="lazy" />
+                <img src="2021-01-04_2160.webp" alt="Revelation I — 3" loading="lazy" />
+                <img src="2021-01-06_2160.webp" alt="Revelation I — 4" loading="lazy" />
+            </div>
+        </section>
+        <div class="panel shot"><img src="2021-01-01_2160.webp" alt="Revelation I — 1" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-01-02_2160.webp" alt="Revelation I — 2" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-01-04_2160.webp" alt="Revelation I — 3" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-01-06_2160.webp" alt="Revelation I — 4" loading="lazy" /></div>
+
+        <!-- ============ Revelation II (2021-04) ============ -->
+        <section class="panel overview" id="rev2">
+            <div class="head">
+                <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+                <h2 class="overview-title"><span class="prefix">::zenobotanis.</span>Revelation II</h2>
+            </div>
+            <div class="thumbs">
+                <img src="2021-04-01_2160.webp" alt="Revelation II — 1" loading="lazy" />
+                <img src="2021-04-03_2160.webp" alt="Revelation II — 2" loading="lazy" />
+                <img src="2021-04-04_2160.webp" alt="Revelation II — 3" loading="lazy" />
+                <img src="2021-04-05_2160.webp" alt="Revelation II — 4" loading="lazy" />
+            </div>
+        </section>
+        <div class="panel shot"><img src="2021-04-01_2160.webp" alt="Revelation II — 1" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-04-03_2160.webp" alt="Revelation II — 2" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-04-04_2160.webp" alt="Revelation II — 3" loading="lazy" /></div>
+        <div class="panel shot"><img src="2021-04-05_2160.webp" alt="Revelation II — 4" loading="lazy" /></div>
+
+    </div>
+
+    <div class="nav-hint left" id="navLeft">&lt;</div>
+    <div class="nav-hint right" id="navRight">&gt;</div>
+
+    <script>
+        // Horizontaler Voll-Höhe-Scroller mit Panels (Übersicht + Großbilder).
+        // - Klick auf ein seitliches Panel zentriert es animiert.
+        // - Das jeweils mittigste Panel ist voll sichtbar, die übrigen abgedunkelt;
+        //   die Markierung folgt live dem Scrollen.
+        // - Per URL-Anker (#rev1 / #rev2) startet die Seite an der jeweiligen
+        //   Übersichtsspalte.
+        const scroller = document.getElementById("scroller");
+        const panels = Array.from(scroller.querySelectorAll(".panel"));
+        const navHints = [document.getElementById("navLeft"), document.getElementById("navRight")];
+        let lastFlashed = -1;
+
+        // Lässt die Navigations-Pfeile einmal aufleuchten/pulsieren (2s, dann
+        // verschwinden sie via CSS-Animation). Die Animation wird per Reflow
+        // neu gestartet, damit sie bei jedem Zentrieren erneut läuft.
+        function flashArrows() {
+            navHints.forEach(function (a) {
+                a.classList.remove("show");
+                void a.offsetWidth;
+                a.classList.add("show");
+            });
+        }
+
+        // Markiert genau ein Panel als zentriert (voll sichtbar, nicht klickbar).
+        function setCentered(i) {
+            panels.forEach(function (p, k) {
+                p.classList.toggle("centered", k === i);
+            });
+        }
+
+        // Index des Panels, dessen Mitte der Bildschirmmitte am nächsten ist.
+        function nearestToCenter() {
+            const mid = window.innerWidth / 2;
+            let best = 0, bestDist = Infinity;
+            panels.forEach(function (p, i) {
+                const r = p.getBoundingClientRect();
+                const d = Math.abs(r.left + r.width / 2 - mid);
+                if (d < bestDist) { bestDist = d; best = i; }
+            });
+            return best;
+        }
+
+        function center(i, smooth) {
+            panels[i].scrollIntoView({
+                behavior: smooth ? "smooth" : "instant",
+                inline: "center",
+                block: "nearest"
+            });
+            // Beim animierten Scrollen übernimmt der scroll-Listener die
+            // Markierung live; beim Instant-Sprung sofort setzen (kein Flackern).
+            if (!smooth) setCentered(i);
+        }
+
+        // Klick (außer auf Links / aufs bereits zentrierte Panel) zentriert das
+        // angeklickte Panel (animiert).
+        scroller.addEventListener("click", function (e) {
+            if (e.target.closest("a")) return;
+            const panel = e.target.closest(".panel");
+            if (!panel || panel.classList.contains("centered")) return;
+            center(panels.indexOf(panel), true);
+        });
+
+        // Beim Scrollen immer das mittigste Panel opak halten (live, ohne zu
+        // navigieren). Kommt das Scrollen zur Ruhe und ist ein neues Panel
+        // zentriert, leuchten die Navigations-Pfeile kurz auf.
+        let raf = null;
+        let scrollEndTimer = null;
+        scroller.addEventListener("scroll", function () {
+            if (!raf) {
+                raf = requestAnimationFrame(function () {
+                    raf = null;
+                    setCentered(nearestToCenter());
+                });
+            }
+            clearTimeout(scrollEndTimer);
+            scrollEndTimer = setTimeout(function () {
+                const i = nearestToCenter();
+                if (i !== lastFlashed) {
+                    lastFlashed = i;
+                    flashArrows();
+                }
+            }, 140);
+        });
+
+        // Einstieg per Anker bestimmen.
+        function initFromHash() {
+            const id = (location.hash || "").slice(1);
+            const target = id ? document.getElementById(id) : null;
+            const i = target ? panels.indexOf(target) : -1;
+            const idx = i >= 0 ? i : 0;
+            center(idx, false);
+            // Pfeile beim Öffnen einmal zeigen.
+            lastFlashed = idx;
+            flashArrows();
+        }
+
+        window.addEventListener("hashchange", initFromHash);
+        window.addEventListener("load", initFromHash);
+    </script>
+</body>
+
+</html>

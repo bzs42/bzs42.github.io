@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bzs42::artwork — 50 Shades of Purple</title>
+    <style>
+        /* --- 1. VARIABLEN & RESET --- */
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #fba90a;
+            --link-color: #536dfe;
+            --gap: 5px;
+            --transition-speed: 0.6s;
+            --fade-speed: 0.4s;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        body {
+            color: var(--text-color);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            /* 10px Safe-Area: schützt die Breadcrumb-Ecke vor Safaris runden
+               Fensterecken und der Fullscreen-Navigations-Hotzone */
+            padding: 10px;
+        }
+
+        /* --- 2. HEADER & FOOTER --- */
+        header {
+            flex: 0 0 auto;
+            text-align: right;
+            overflow: hidden;
+            opacity: 1;
+            /*max-height: 100px;*/
+            /* Definiertes Maximum für saubere Transition */
+            transition: max-height var(--transition-speed) ease, opacity var(--fade-speed) ease;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 10vh, 4rem);
+            color: var(--text-color);
+        }
+
+        /* Breadcrumb: bzs42 -> Seiten-Root, artwork -> Galerie-Index.
+           Gelb (inkl. Doppelpunkt), größer als zuvor, aber kleiner als der
+           Werkname (h1, 2.5rem). Links unterstrichen als Link-Hinweis. */
+        .crumbs {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 2px;
+        }
+
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .crumbs a:hover {
+            color: var(--text-color);
+        }
+
+        /* --- 3. GALLERY LAYOUT (FLEXBOX) --- */
+        .gallery {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+            min-height: 0;
+            /* Verhindert das Aufblähen in Flex-Containern */
+        }
+
+        .gallery-row {
+            flex: 1 1 0;
+            display: flex;
+            gap: var(--gap);
+            min-height: 0;
+        }
+
+        figure {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        figure img {
+            flex: 1 1 0;
+            width: 100%;
+            min-height: 0;
+            object-fit: contain;
+            display: block;
+        }
+
+        figcaption {
+            flex: 0 0 auto;
+            overflow: hidden;
+            text-align: center;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            /* Umgestellt auf rem für bessere Skalierbarkeit */
+            padding: 8px;
+            opacity: 1;
+            max-height: 50px;
+            /* Definiertes Maximum */
+            transition: max-height var(--transition-speed) ease, padding var(--transition-speed) ease, opacity var(--fade-speed) ease;
+        }
+
+        /* --- 4. MODUS: TITEL VERSTECKT --- */
+        body.titles-hidden header,
+        body.titles-hidden figcaption {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        body.titles-hidden figcaption {
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
+        <h1>.50 Shades of Purple - Light Fever</h1>
+    </header>
+
+    <div class="gallery">
+        <div class="gallery-row">
+            <figure>
+                <figcaption>Immersive Ego Zentrifuge</figcaption>
+                <img src="20240315_163053_edited_956.webp" alt="Light Fever — 15.03.2024" />
+            </figure>
+            <figure>
+                <figcaption>Transit</figcaption>
+                <img src="20240511_163443_edited_956.webp" alt="Light Fever — 11.05.2024" />
+            </figure>
+            <figure>
+                <figcaption>Interferenz</figcaption>
+                <img src="P_20250125_182638_edited_956.webp" alt="Light Fever — 25.01.2025" />
+            </figure>
+            <figure>
+                <figcaption>Lichtstrom</figcaption>
+                <img src="P_20250703_000143_edited_956.webp" alt="Light Fever — 03.07.2025" />
+            </figure>
+        </div>
+        <div class="gallery-row">
+            <figure>
+                <img src="PSX_20250918_220054_1_956.webp" alt="Light Fever — 18.09.2025" />
+                <figcaption>Ekstase</figcaption>
+            </figure>
+            <figure>
+                <img src="P_20250823_211758_edited_956.webp" alt="Light Fever — 23.08.2025" />
+                <figcaption>Orbit</figcaption>
+            </figure>
+            <figure>
+                <img src="P_20251220_111434_edited_956.webp" alt="Light Fever — 20.12.2025" />
+                <figcaption>Inversion</figcaption>
+            </figure>
+            <figure>
+                <img src="P_20251231_235720_edited_956.webp" alt="Light Fever — 31.12.2025" />
+                <figcaption>Supernova</figcaption>
+            </figure>
+        </div>
+    </div>
+
+    <script>
+        // Titles, header and footer start visible, fade out after 3s of
+        // stillness, and come back on mouse movement (which also restarts
+        // the countdown).
+        let hideTimer;
+
+        function hideTitles() {
+            document.body.classList.add("titles-hidden");
+        }
+
+        function showTitles() {
+            document.body.classList.remove("titles-hidden");
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(hideTitles, 3000);
+        }
+
+        hideTimer = setTimeout(hideTitles, 3000);
+        window.addEventListener("mousemove", showTitles);
+        window.addEventListener("touchstart", showTitles);
+    </script>
+</body>
+
+</html>

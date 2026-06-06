@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bzs42::artwork — Ancient Cubes</title>
+    <style>
+        /* --- 1. VARIABLEN & RESET --- */
+        :root {
+            /* HINTERGRUND: warmer, erdiger Terrakotta-Ton der Würfel – bleibt erhalten */
+            --bg-color: #2b1c15;
+
+            /* SCHRIFT & GITTER: leuchtendes Stargate-Cyan, wie die Glyphen auf
+               den technologischen Raumschiffen / dem Event Horizon */
+            --glyph-cyan: #7ff0ff;
+            --glyph-cyan-dim: #4ec3d6;
+            --glyph-teal-deep: #0c2c33;
+            --text-color: #aee9f0;
+            --accent-color: #7ff0ff;
+
+            /* technisches Blau für die Verbindungs-Knoten */
+            --tech-blue: #183BF0;
+            --gap: 6px;
+            --transition-speed: 0.5s;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        body {
+            color: var(--text-color);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: row;
+            /* 10px Safe-Area: schützt die Breadcrumb-Ecke vor Safaris runden
+               Fensterecken und der Fullscreen-Navigations-Hotzone */
+            padding: 10px;
+        }
+
+        /* --- 2. HEADER (oben links, überlagert das Zoom-Bild) --- */
+        .sidebar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            /* eigene 10px Safe-Area: das absolut positionierte Sidebar wird vom
+               body-padding nicht verschoben, deshalb hier explizit einrücken */
+            padding: 10px;
+            pointer-events: none;
+        }
+
+        .sidebar a {
+            pointer-events: auto;
+        }
+
+        .title {
+            display: flex;
+            /* Segmente stehen untereinander */
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-shadow: 0 0 8px rgba(127, 240, 255, 0.45);
+        }
+
+        .title .seg {
+            white-space: nowrap;
+            padding: 7px 12px;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
+        }
+
+        /* Breadcrumb-Box (bzs42 -> Seiten-Root, artwork -> Galerie-Index):
+           bleibt im Cyan-Theme der Seite; Links unterstrichen. */
+        .title .seg1 {
+            color: var(--glyph-cyan);
+            background: var(--glyph-teal-deep);
+        }
+
+        .title .seg1 a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .title .seg1 a:hover {
+            color: #ffffff;
+        }
+
+        .title .seg2 {
+            color: var(--glyph-teal-deep);
+            background: var(--glyph-cyan-dim);
+        }
+
+        .title .seg3 {
+            /* die Runen-Glyphen: hell leuchtendes Cyan auf tiefem Schwarz-Teal */
+            color: var(--glyph-cyan);
+            background: #06181c;
+            text-shadow: 0 0 10px rgba(127, 240, 255, 0.8);
+        }
+
+        /* --- 3. BÜHNE: 3 SPALTEN, AM UNTEREN RAND AUSGERICHTET --- */
+        .stage {
+            flex: 1 1 auto;
+            display: flex;
+            align-items: flex-end;
+            gap: var(--gap);
+            min-width: 0;
+            min-height: 0;
+        }
+
+        /* linke Spalte: Lupe – zeigt einen vergrößerten Ausschnitt des
+           mittleren Bildes an der Mausposition */
+        .zoom-wrap {
+            flex: 1 1 auto;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        .zoom {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-color: rgba(0, 0, 0, 0.2);
+            visibility: hidden;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
+        }
+
+        .zoom.active {
+            visibility: visible;
+        }
+
+        /* Fadenkreuz im Stargate-Glyphen-Cyan:
+           ::before = die beiden Linien (mit Lücke in der Mitte),
+           ::after  = der zentrale Ring */
+        .zoom::before,
+        .zoom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .zoom::before {
+            width: 100%;
+            height: 100%;
+            opacity: 0.6;
+            background-image:
+                /* vertikale Linie mit Lücke um die Mitte */
+                linear-gradient(to bottom,
+                    var(--glyph-cyan) 0, var(--glyph-cyan) calc(50% - 11px),
+                    transparent calc(50% - 11px), transparent calc(50% + 11px),
+                    var(--glyph-cyan) calc(50% + 11px), var(--glyph-cyan) 100%),
+                /* horizontale Linie mit Lücke um die Mitte */
+                linear-gradient(to right,
+                    var(--glyph-cyan) 0, var(--glyph-cyan) calc(50% - 11px),
+                    transparent calc(50% - 11px), transparent calc(50% + 11px),
+                    var(--glyph-cyan) calc(50% + 11px), var(--glyph-cyan) 100%);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 1px 100%, 100% 1px;
+        }
+
+        .zoom::after {
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--glyph-cyan);
+            border-radius: 50%;
+            opacity: 0.7;
+            box-shadow: 0 0 6px rgba(127, 240, 255, 0.6);
+        }
+
+        /* mittlere Spalte: das große Bild, so hoch wie möglich */
+        .featured-wrap {
+            flex: 0 0 auto;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            min-width: 0;
+        }
+
+        .featured {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            display: block;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
+        }
+
+        /* Thumb-Host: relativer Anker pro Thumbnail, damit der Kreis
+           links mittig am Thumb sitzt. Höhe ergibt sich automatisch. */
+        .side .node-host {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        /* Verbindungs-Knoten: technischer blauer Kreis mit Cyan-Glühen.
+           Liegt links mittig am Bild, über allen Bildern (hohe z-index),
+           blockiert aber keine Maus-Interaktion (pointer-events: none). */
+        .node {
+            position: absolute;
+            left: -3px;
+            top: 75%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        /* rechte Spalte: zwei Bilder übereinander, so breit wie verfügbar */
+        .side {
+            flex: 0 0 auto;
+            width: 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: var(--gap);
+            min-height: 0;
+        }
+
+        .thumb {
+            width: 100%;
+            display: block;
+            cursor: pointer;
+            transition: opacity var(--transition-speed) ease, filter 0.3s ease;
+            /* Rahmen + Glühen wie die Verbindungs-Knoten (.node) */
+            border: 1px solid var(--glyph-cyan);
+            box-shadow:
+                0 0 10px var(--tech-blue),
+                0 0 6px rgba(127, 240, 255, 0.8);
+        }
+
+        .thumb:hover {
+            filter: brightness(1.12);
+            /* verstärktes Glühen beim Hover */
+            box-shadow:
+                0 0 20px var(--tech-blue),
+                0 0 12px rgba(127, 240, 255, 1);
+        }
+
+        .terminal-hintergrund {
+            /* 1. Hintergrundfarbe: warmer Terrakotta-Ton (Kontrast zum Cyan-Gitter) */
+            background-color: var(--bg-color);
+
+            /* 2. Zwei überlagerte Linien-Muster (horizontal & vertikal) im
+                  Stargate-Glyphen-Cyan – das technologische Raster */
+            background-image:
+                linear-gradient(to right, rgba(127, 240, 255, 0.16) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(127, 240, 255, 0.16) 1px, transparent 1px);
+
+            /* 3. Die Größe einer einzelnen Raster-Kachel */
+            background-size: 25px 25px;
+        }
+    </style>
+</head>
+
+<body class="terminal-hintergrund">
+
+    <aside class="sidebar">
+        <h1 class="title">
+            <div class="seg seg1"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></div>
+            <div class="seg seg2">.Ancient Cubes</div>
+            <div class="seg seg3">ᚢᛈᛞᛉ</div>
+        </h1>
+    </aside>
+
+    <div class="stage">
+        <div class="zoom-wrap">
+            <div class="zoom" id="zoom"></div>
+        </div>
+        <div class="featured-wrap">
+            <img class="featured" id="featured" src="2021-02-01_2160.webp" data-base="2021-02-01" alt="Ancient Cubes" />
+            <span class="node"></span>
+        </div>
+        <div class="side">
+            <span class="node-host">
+                <img class="thumb" src="2021-02-02_384.webp" data-base="2021-02-02" alt="Ancient Cubes" />
+                <span class="node"></span>
+            </span>
+            <span class="node-host">
+                <img class="thumb" src="2021-02-03_384.webp" data-base="2021-02-03" alt="Ancient Cubes" />
+                <span class="node"></span>
+            </span>
+        </div>
+    </div>
+
+    <script>
+        // Klick auf ein kleines Bild tauscht es mit dem großen Bild links aus.
+        // Das große Bild lädt die fürs 4K-Layout passende _2160-Version, die
+        // Seitenspalte die kleinen _384-Thumbnails. Die volle Auflösung
+        // (Original <base>.jpg) wird nur von der Zoom-Lupe verwendet.
+        const featured = document.getElementById("featured");
+
+        document.querySelectorAll(".thumb").forEach(function (thumb) {
+            thumb.addEventListener("click", function () {
+                const prevBase = featured.dataset.base;
+                const nextBase = thumb.dataset.base;
+
+                featured.dataset.base = nextBase;
+                featured.src = nextBase + "_2160.webp";
+
+                thumb.dataset.base = prevBase;
+                thumb.src = prevBase + "_384.webp";
+            });
+        });
+
+        // Lupe: Bewegt sich die Maus über dem großen Bild, zeigt die linke
+        // Spalte einen vergrößerten Ausschnitt der aktuellen Mausposition.
+        // Außerhalb des großen Bildes bleibt die Spalte leer.
+        const zoom = document.getElementById("zoom");
+        const ZOOM = 3;
+
+        featured.addEventListener("mousemove", function (e) {
+            const rect = featured.getBoundingClientRect();
+            const cx = e.clientX - rect.left;
+            const cy = e.clientY - rect.top;
+
+            if (cx < 0 || cy < 0 || cx > rect.width || cy > rect.height) {
+                zoom.classList.remove("active");
+                return;
+            }
+
+            // Zoom nutzt immer das hochauflösende Original (<base>.webp),
+            // nicht die verkleinerte _2160-Version des Mittel-Bildes.
+            const src = featured.dataset.base + ".webp";
+            if (zoom.dataset.src !== src) {
+                zoom.style.backgroundImage = "url('" + src + "')";
+                zoom.dataset.src = src;
+            }
+
+            const bgW = rect.width * ZOOM;
+            const bgH = rect.height * ZOOM;
+            const posX = zoom.clientWidth / 2 - cx * ZOOM;
+            const posY = zoom.clientHeight / 2 - cy * ZOOM;
+
+            zoom.style.backgroundSize = bgW + "px " + bgH + "px";
+            zoom.style.backgroundPosition = posX + "px " + posY + "px";
+            zoom.classList.add("active");
+        });
+
+        featured.addEventListener("mouseleave", function () {
+            zoom.classList.remove("active");
+        });
+    </script>
+</body>
+
+</html>
