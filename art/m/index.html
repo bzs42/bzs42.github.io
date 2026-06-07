@@ -65,7 +65,8 @@
             text-decoration: underline;
         }
 
-        /* Werktitel, eine Zeile darunter, eine Stufe größer als der Kopf */
+        /* Werktitel, eine Zeile darunter, eine Stufe größer als der Kopf.
+           Als Link erkennbar: unterstrichen (Akzentfarbe) + nachgestellter Pfeil. */
         .wtitle {
             display: inline-block;
             margin-top: 4px;
@@ -73,7 +74,10 @@
             font-weight: 600;
             line-height: 1.2;
             color: var(--text);
-            text-decoration: none;
+            text-decoration: underline;
+            text-decoration-color: var(--accent);
+            text-underline-offset: 5px;
+            text-decoration-thickness: 2px;
         }
 
         .wtitle .prefix {
@@ -83,6 +87,7 @@
         /* Repräsentatives Bild, full-width, quadratisch */
         .shotlink {
             display: block;
+            position: relative;
             flex: 0 1 auto;
         }
 
@@ -90,6 +95,30 @@
             display: block;
             width: 100%;
             height: auto;
+        }
+
+        /* Plakette unten rechts auf dem Bild: das Stack-Icon (doppelter Rahmen)
+           signalisiert, dass dahinter eine Galerie mit weiteren Bildern liegt.
+           pointer-events:none -> Taps gehen an den umschließenden Link. */
+        .viewcue {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            color: var(--accent);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+        }
+
+        .viewcue svg {
+            display: block;
         }
 
         /* Beschreibung (nur wo auf dem Desktop vorhanden) */
@@ -214,6 +243,7 @@
         <a class="shotlink" href="50shades/50shades.html">
             <img class="shot" src="50shades/20240315_163053_edited_956.webp"
                 alt=".50 Shades of Purple - Light Fever" />
+            <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
     </section>
 
@@ -224,6 +254,7 @@
         </div>
         <a class="shotlink" href="ancientCubes/ancientCubes.html">
             <img class="shot" src="ancientCubes/2021-02-01_1290.webp" alt=".Ancient Cubes" />
+            <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
     </section>
 
@@ -234,6 +265,7 @@
         </div>
         <a class="shotlink" href="revelation1/revelation1.html">
             <img class="shot" src="revelation1/2021-01-01_1290.webp" alt="::zenobotanis.Revelation I" />
+            <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
     </section>
 
@@ -244,6 +276,7 @@
         </div>
         <a class="shotlink" href="revelation2/revelation2.html">
             <img class="shot" src="revelation2/2021-04-01_1290.webp" alt="::zenobotanis.Revelation II" />
+            <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
     </section>
 
@@ -254,6 +287,7 @@
         </div>
         <a class="shotlink" href="astrobloom/astrobloom.html">
             <img class="shot" src="astrobloom/P_20260501_190841_1290.webp" alt="::zenobotanis.Astrobloom" />
+            <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
         <div class="desc">
             <p class="tagline">Astrobloom — Signale aus dem Regolith</p>
