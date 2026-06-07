@@ -180,21 +180,26 @@
         .scroll-ind {
             position: fixed;
             left: 50%;
-            bottom: 16px;
+            /* iOS: lift clear of the home-indicator swipe zone, else the gesture eats the tap */
+            bottom: calc(16px + env(safe-area-inset-bottom));
             z-index: 20;
-            width: 30px;
-            height: 30px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--accent);
             cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
             opacity: 0.85;
             filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.7));
             animation: bobDown 1.5s ease-in-out infinite;
         }
 
         .scroll-ind .chev {
+            /* iOS: route the tap to the cursor:pointer parent so click is synthesized */
+            pointer-events: none;
             display: block;
             width: 13px;
             height: 13px;
