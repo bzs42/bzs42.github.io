@@ -144,7 +144,7 @@
         }
 
         .overview-title {
-            font-size: clamp(1rem, 10vh, 4rem);
+            font-size: clamp(1rem, 10vh, 3rem);
             font-weight: 600;
             line-height: 1.35;
         }
@@ -174,13 +174,14 @@
             color: var(--text-color);
         }
 
-        /* Das 2x2-Grid füllt die verbleibende Höhe der Spalte. */
+        /* minmax(0, 1fr), not 1fr: img items' auto min-size would otherwise block
+           the tracks from shrinking, overflowing the panel when the title grows. */
         .thumbs {
             flex: 1 1 auto;
             min-height: 0;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-rows: repeat(2, minmax(0, 1fr));
             gap: var(--gap);
         }
 
