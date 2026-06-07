@@ -54,6 +54,27 @@
             color: #FBA90A;
         }
 
+        p.contact {
+            margin-top: clamp(22px, 5.5vh, 44px);
+            font-size: clamp(12px, 2.9vw, 18px);
+            line-height: 1.9;
+            letter-spacing: 0.02em;
+            color: #8a8a8a;
+        }
+
+        p.contact a.h {
+            color: #536DFE;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            white-space: nowrap;
+            transition: color 0.25s ease;
+        }
+
+        p.contact a.h:hover {
+            color: #8597ff;
+        }
+
     </style>
 </head>
 
@@ -66,6 +87,7 @@
     <p>
         <a id="art" class="cap" href="art/m/index.html">::artwork</a>
     </p>
+    <p class="contact">[<a class="h" href="mailto:bezetes42@gmail.com">bezetes42@gmail.com</a>, <a class="h" href="https://t.me/bzs42" target="_blank" rel="noopener noreferrer">t.me/bzs42</a>](message){💬}</p>
     </div>
     <a class="imprint" href="impressum.html">Impressum &amp; Urheberrecht</a>
     <script>
