@@ -51,8 +51,6 @@
 
         .head {
             flex: 0 0 auto;
-            /* Über das Bild gelegt, damit die Einlauf-Animation das Bild überlagert
-               statt dahinter zu verschwinden. */
             position: relative;
             z-index: 2;
         }
@@ -157,10 +155,6 @@
             color: var(--text);
         }
 
-        /* --- Einlauf-Animation: Kopf fliegt von weiter oben ein, Titel gegenläufig
-               von weiter unten, beide vergrößert (1.5) und zur Grundlinie/Normalgröße
-               zusammenlaufend. Überlagert dabei das Bild. Spielt bei jedem Eintreten
-               neu. --- */
         @keyframes flyInUp {
             0% { transform: translateY(-90px) scale(1.5); }
             100% { transform: translateY(0) scale(1); }
