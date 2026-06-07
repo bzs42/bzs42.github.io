@@ -51,6 +51,10 @@
 
         .head {
             flex: 0 0 auto;
+            /* Über das Bild gelegt, damit die Einlauf-Animation das Bild überlagert
+               statt dahinter zu verschwinden. */
+            position: relative;
+            z-index: 2;
         }
 
         /* Kopf: bzs42::artwork — bzs42 -> Site-Root, artwork = aktuelle Galerie (Klartext) */
@@ -153,26 +157,28 @@
             color: var(--text);
         }
 
-        /* --- Einlauf-Animation: Kopf nach oben, Titel gegenläufig nach unten,
-               jeweils zurück zur Grundlinie. Spielt bei jedem Eintreten neu. --- */
-        @keyframes nudgeUp {
-            0% { transform: translateY(0); }
-            45% { transform: translateY(-28px); }
-            100% { transform: translateY(0); }
+        /* --- Einlauf-Animation: Kopf fliegt von weiter oben ein, Titel gegenläufig
+               von weiter unten, beide vergrößert (1.5) und zur Grundlinie/Normalgröße
+               zusammenlaufend. Überlagert dabei das Bild. Spielt bei jedem Eintreten
+               neu. --- */
+        @keyframes flyInUp {
+            0% { transform: translateY(-90px) scale(1.5); }
+            100% { transform: translateY(0) scale(1); }
         }
 
-        @keyframes nudgeDown {
-            0% { transform: translateY(0); }
-            45% { transform: translateY(28px); }
-            100% { transform: translateY(0); }
+        @keyframes flyInDown {
+            0% { transform: translateY(90px) scale(1.5); }
+            100% { transform: translateY(0) scale(1); }
         }
 
         .work.in .crumb {
-            animation: nudgeUp 1.2s ease;
+            transform-origin: left center;
+            animation: flyInUp 1.2s ease;
         }
 
         .work.in .wtitle {
-            animation: nudgeDown 1.2s ease;
+            transform-origin: left center;
+            animation: flyInDown 1.2s ease;
         }
 
         /* --- Scroll-Indikator: zeigt an, dass weiter unten (bzw. oben) noch
