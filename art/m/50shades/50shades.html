@@ -49,16 +49,31 @@
             line-height: 1.2;
         }
 
-        /* Großes Bild, füllt den Restraum */
         .stage {
             flex: 1 1 auto;
             min-height: 0;
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .stage::-webkit-scrollbar { display: none; }
+
+        .slide {
+            flex: 0 0 100%;
+            min-width: 100%;
+            height: 100%;
+            scroll-snap-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .featured {
+        .slide img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
@@ -102,6 +117,9 @@
             opacity: 1;
             border-color: var(--accent);
         }
+        @media (prefers-reduced-motion: reduce) {
+            .stage { scroll-behavior: auto; }
+        }
     </style>
 </head>
 
@@ -110,64 +128,54 @@
     <nav class="crumbs"><a href="../../../index.html">bzs42</a>::<a href="../index.html">artwork</a></nav>
     <h1 class="wtitle">.50 Shades of Purple - Light Fever</h1>
 
-    <div class="stage">
-        <img class="featured" id="featured" src="20240315_163053_edited_956.webp"
-            alt="Light Fever — Immersive Ego Zentrifuge" />
+    <div class="stage" id="stage">
+        <div class="slide"><img src="20240315_163053_edited_956.webp" alt="Light Fever — Immersive Ego Zentrifuge" /></div>
+        <div class="slide"><img src="20240511_163443_edited_956.webp" loading="lazy" alt="Light Fever — Transit" /></div>
+        <div class="slide"><img src="P_20250125_182638_edited_956.webp" loading="lazy" alt="Light Fever — Interferenz" /></div>
+        <div class="slide"><img src="P_20250703_000143_edited_956.webp" loading="lazy" alt="Light Fever — Lichtstrom" /></div>
+        <div class="slide"><img src="PSX_20250918_220054_1_956.webp" loading="lazy" alt="Light Fever — Ekstase" /></div>
+        <div class="slide"><img src="P_20250823_211758_edited_956.webp" loading="lazy" alt="Light Fever — Orbit" /></div>
+        <div class="slide"><img src="P_20251220_111434_edited_956.webp" loading="lazy" alt="Light Fever — Inversion" /></div>
+        <div class="slide"><img src="P_20251231_235720_edited_956.webp" loading="lazy" alt="Light Fever — Supernova" /></div>
     </div>
     <div class="caption" id="caption">Immersive Ego Zentrifuge</div>
 
     <div class="thumbs" id="thumbs">
-        <img class="thumb active" src="20240315_163053_edited_400.webp" data-full="20240315_163053_edited_956.webp" data-caption="Immersive Ego Zentrifuge" alt="Light Fever — Immersive Ego Zentrifuge" />
-        <img class="thumb" src="20240511_163443_edited_400.webp" data-full="20240511_163443_edited_956.webp" data-caption="Transit" alt="Light Fever — Transit" />
-        <img class="thumb" src="P_20250125_182638_edited_400.webp" data-full="P_20250125_182638_edited_956.webp" data-caption="Interferenz" alt="Light Fever — Interferenz" />
-        <img class="thumb" src="P_20250703_000143_edited_400.webp" data-full="P_20250703_000143_edited_956.webp" data-caption="Lichtstrom" alt="Light Fever — Lichtstrom" />
-        <img class="thumb" src="PSX_20250918_220054_1_400.webp" data-full="PSX_20250918_220054_1_956.webp" data-caption="Ekstase" alt="Light Fever — Ekstase" />
-        <img class="thumb" src="P_20250823_211758_edited_400.webp" data-full="P_20250823_211758_edited_956.webp" data-caption="Orbit" alt="Light Fever — Orbit" />
-        <img class="thumb" src="P_20251220_111434_edited_400.webp" data-full="P_20251220_111434_edited_956.webp" data-caption="Inversion" alt="Light Fever — Inversion" />
-        <img class="thumb" src="P_20251231_235720_edited_400.webp" data-full="P_20251231_235720_edited_956.webp" data-caption="Supernova" alt="Light Fever — Supernova" />
+        <img class="thumb active" src="20240315_163053_edited_400.webp" data-caption="Immersive Ego Zentrifuge" alt="Light Fever — Immersive Ego Zentrifuge" />
+        <img class="thumb" src="20240511_163443_edited_400.webp" data-caption="Transit" alt="Light Fever — Transit" />
+        <img class="thumb" src="P_20250125_182638_edited_400.webp" data-caption="Interferenz" alt="Light Fever — Interferenz" />
+        <img class="thumb" src="P_20250703_000143_edited_400.webp" data-caption="Lichtstrom" alt="Light Fever — Lichtstrom" />
+        <img class="thumb" src="PSX_20250918_220054_1_400.webp" data-caption="Ekstase" alt="Light Fever — Ekstase" />
+        <img class="thumb" src="P_20250823_211758_edited_400.webp" data-caption="Orbit" alt="Light Fever — Orbit" />
+        <img class="thumb" src="P_20251220_111434_edited_400.webp" data-caption="Inversion" alt="Light Fever — Inversion" />
+        <img class="thumb" src="P_20251231_235720_edited_400.webp" data-caption="Supernova" alt="Light Fever — Supernova" />
     </div>
 
     <script>
-        const featured = document.getElementById("featured");
-        const caption = document.getElementById("caption");
-        const stage = document.querySelector(".stage");
+        const stage = document.getElementById("stage");
+        const slides = Array.from(stage.querySelectorAll(".slide"));
         const thumbs = Array.from(document.querySelectorAll(".thumb"));
-        let current = thumbs.findIndex(function (t) { return t.classList.contains("active"); });
-        if (current < 0) current = 0;
+        const caption = document.getElementById("caption");
 
-        function select(i) {
-            if (i < 0 || i >= thumbs.length || i === current) return;
-            const t = thumbs[i];
-            featured.src = t.dataset.full;
-            featured.alt = t.alt;
-            if (caption) caption.textContent = t.dataset.caption || "";
-            thumbs[current].classList.remove("active");
-            t.classList.add("active");
-            t.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-            current = i;
+        function setActive(i) {
+            thumbs.forEach(function (t, j) { t.classList.toggle("active", j === i); });
+            if (caption && thumbs[i]) caption.textContent = thumbs[i].dataset.caption || "";
+            if (thumbs[i]) thumbs[i].scrollIntoView({ inline: "center", block: "nearest" });
         }
 
         thumbs.forEach(function (t, i) {
-            t.addEventListener("click", function () { select(i); });
+            t.addEventListener("click", function () {
+                slides[i].scrollIntoView({ inline: "center", block: "nearest" });
+            });
         });
 
-        let startX = 0, startY = 0, swiping = false;
-        stage.addEventListener("touchstart", function (e) {
-            const p = e.changedTouches[0];
-            startX = p.clientX;
-            startY = p.clientY;
-            swiping = true;
-        }, { passive: true });
-        stage.addEventListener("touchend", function (e) {
-            if (!swiping) return;
-            swiping = false;
-            const p = e.changedTouches[0];
-            const dx = p.clientX - startX;
-            const dy = p.clientY - startY;
-            if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-                select(dx < 0 ? current + 1 : current - 1);
-            }
-        }, { passive: true });
+        const io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) setActive(slides.indexOf(e.target));
+            });
+        }, { root: stage, threshold: 0.6 });
+
+        slides.forEach(function (s) { io.observe(s); });
     </script>
 </body>
 
