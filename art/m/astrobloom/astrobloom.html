@@ -121,18 +121,46 @@
     </div>
 
     <script>
-        // Tap auf ein Thumbnail tauscht das große Bild und markiert den aktiven Thumb.
         const featured = document.getElementById("featured");
+        const caption = document.getElementById("caption");
+        const stage = document.querySelector(".stage");
         const thumbs = Array.from(document.querySelectorAll(".thumb"));
+        let current = thumbs.findIndex(function (t) { return t.classList.contains("active"); });
+        if (current < 0) current = 0;
 
-        thumbs.forEach(function (t) {
-            t.addEventListener("click", function () {
-                featured.src = t.dataset.full;
-                featured.alt = t.alt;
-                thumbs.forEach(function (x) { x.classList.remove("active"); });
-                t.classList.add("active");
-            });
+        function select(i) {
+            if (i < 0 || i >= thumbs.length || i === current) return;
+            const t = thumbs[i];
+            featured.src = t.dataset.full;
+            featured.alt = t.alt;
+            if (caption) caption.textContent = t.dataset.caption || "";
+            thumbs[current].classList.remove("active");
+            t.classList.add("active");
+            t.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            current = i;
+        }
+
+        thumbs.forEach(function (t, i) {
+            t.addEventListener("click", function () { select(i); });
         });
+
+        let startX = 0, startY = 0, swiping = false;
+        stage.addEventListener("touchstart", function (e) {
+            const p = e.changedTouches[0];
+            startX = p.clientX;
+            startY = p.clientY;
+            swiping = true;
+        }, { passive: true });
+        stage.addEventListener("touchend", function (e) {
+            if (!swiping) return;
+            swiping = false;
+            const p = e.changedTouches[0];
+            const dx = p.clientX - startX;
+            const dy = p.clientY - startY;
+            if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+                select(dx < 0 ? current + 1 : current - 1);
+            }
+        }, { passive: true });
     </script>
 </body>
 
