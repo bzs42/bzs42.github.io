@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>bzs42::artwork</title>
+    <script>document.documentElement.className = "js";</script>
     <style>
         :root {
             --bg: #0e1019;
@@ -19,16 +20,13 @@
             box-sizing: border-box;
         }
 
-        html,
-        body {
+        html, body {
             height: 100%;
         }
 
         html {
             background: var(--bg);
-            /* Vertikaler Snap-Scroller: jede Section rastet mit ihrem Header oben ein */
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
+            scroll-snap-type: y proximity;
             scroll-behavior: smooth;
         }
 
@@ -38,15 +36,15 @@
             -webkit-text-size-adjust: 100%;
         }
 
-        /* --- Eine Section pro Kunstwerk --- */
         .work {
             min-height: 100vh;
+            min-height: 100svh;
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 16px;
-            padding: 18px 14px;
+            padding: 24px 16px;
         }
 
         .work:last-of-type {
@@ -54,14 +52,12 @@
         }
 
         .head {
-            flex: 0 0 auto;
             position: relative;
             z-index: 2;
         }
 
-        /* Kopf: bzs42::artwork — bzs42 -> Site-Root, artwork = aktuelle Galerie (Klartext) */
         .crumb {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--accent);
         }
@@ -71,11 +67,9 @@
             text-decoration: underline;
         }
 
-        /* Werktitel, eine Zeile darunter, eine Stufe größer als der Kopf.
-           Als Link erkennbar: unterstrichen (Akzentfarbe) + nachgestellter Pfeil. */
         .wtitle {
             display: inline-block;
-            margin-top: 4px;
+            margin-top: 6px;
             font-size: 1.7rem;
             font-weight: 600;
             line-height: 1.2;
@@ -90,11 +84,9 @@
             color: var(--accent);
         }
 
-        /* Repräsentatives Bild, full-width, quadratisch */
         .shotlink {
             display: block;
             position: relative;
-            flex: 0 1 auto;
         }
 
         .shot {
@@ -103,9 +95,6 @@
             height: auto;
         }
 
-        /* Plakette unten rechts auf dem Bild: das Stack-Icon (doppelter Rahmen)
-           signalisiert, dass dahinter eine Galerie mit weiteren Bildern liegt.
-           pointer-events:none -> Taps gehen an den umschließenden Link. */
         .viewcue {
             position: absolute;
             right: 10px;
@@ -127,9 +116,7 @@
             display: block;
         }
 
-        /* Beschreibung (nur wo auf dem Desktop vorhanden) */
         .desc {
-            flex: 0 0 auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -159,24 +146,32 @@
             color: var(--text);
         }
 
-        @keyframes flyInUp {
-            0% { transform: translateY(-90px) scale(1.5); }
-            100% { transform: translateY(0) scale(1); }
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
 
-        @keyframes flyInDown {
-            0% { transform: translateY(90px) scale(1.5); }
-            100% { transform: translateY(0) scale(1); }
+        .js .crumb.reveal {
+            transform: translateY(-52px);
         }
 
-        .work.in .crumb {
-            transform-origin: left center;
-            animation: flyInUp 1.2s ease;
+        .js .wtitle.reveal {
+            transform: translateY(52px);
+            transition-delay: 0.06s;
         }
 
-        .work.in .wtitle {
-            transform-origin: left center;
-            animation: flyInDown 1.2s ease;
+        .js .shotlink.reveal {
+            transition-delay: 0.14s;
+        }
+
+        .js .desc.reveal {
+            transition-delay: 0.2s;
+        }
+
+        .js .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .navdot {
@@ -209,11 +204,14 @@
             transform: translateX(-50%) scale(0.92);
         }
 
+        .navdot .arrow {
+            display: flex;
+        }
+
         .navdot svg {
             display: block;
             width: 24px;
             height: 24px;
-            pointer-events: none;
             filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
             transition: transform 0.3s ease;
         }
@@ -224,8 +222,7 @@
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
-            .work.in .crumb,
-            .work.in .wtitle { animation: none; }
+            .js .reveal { opacity: 1; transform: none; transition: none; }
             .navdot svg { transition: none; }
         }
     </style>
@@ -235,10 +232,10 @@
 
     <section class="work">
         <div class="head">
-            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
-            <a class="wtitle" href="50shades/50shades.html">.50 Shades of Purple - Light Fever</a>
+            <div class="crumb reveal"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle reveal" href="50shades/50shades.html">.50 Shades of Purple - Light Fever</a>
         </div>
-        <a class="shotlink" href="50shades/50shades.html">
+        <a class="shotlink reveal" href="50shades/50shades.html">
             <img class="shot" src="50shades/20240315_163053_edited_956.webp"
                 alt=".50 Shades of Purple - Light Fever" />
             <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
@@ -247,10 +244,10 @@
 
     <section class="work">
         <div class="head">
-            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
-            <a class="wtitle" href="ancientCubes/ancientCubes.html">.Ancient Cubes</a>
+            <div class="crumb reveal"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle reveal" href="ancientCubes/ancientCubes.html">.Ancient Cubes</a>
         </div>
-        <a class="shotlink" href="ancientCubes/ancientCubes.html">
+        <a class="shotlink reveal" href="ancientCubes/ancientCubes.html">
             <img class="shot" src="ancientCubes/2021-02-01_1290.webp" alt=".Ancient Cubes" />
             <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
@@ -258,10 +255,10 @@
 
     <section class="work">
         <div class="head">
-            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
-            <a class="wtitle" href="revelation1/revelation1.html"><span class="prefix">::zenobotanis.</span>Revelation I</a>
+            <div class="crumb reveal"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle reveal" href="revelation1/revelation1.html"><span class="prefix">::zenobotanis.</span>Revelation I</a>
         </div>
-        <a class="shotlink" href="revelation1/revelation1.html">
+        <a class="shotlink reveal" href="revelation1/revelation1.html">
             <img class="shot" src="revelation1/2021-01-01_1290.webp" alt="::zenobotanis.Revelation I" />
             <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
@@ -269,10 +266,10 @@
 
     <section class="work">
         <div class="head">
-            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
-            <a class="wtitle" href="revelation2/revelation2.html"><span class="prefix">::zenobotanis.</span>Revelation II</a>
+            <div class="crumb reveal"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle reveal" href="revelation2/revelation2.html"><span class="prefix">::zenobotanis.</span>Revelation II</a>
         </div>
-        <a class="shotlink" href="revelation2/revelation2.html">
+        <a class="shotlink reveal" href="revelation2/revelation2.html">
             <img class="shot" src="revelation2/2021-04-01_1290.webp" alt="::zenobotanis.Revelation II" />
             <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
@@ -280,14 +277,14 @@
 
     <section class="work">
         <div class="head">
-            <div class="crumb"><a href="../../index.html">bzs42</a>::artwork</div>
-            <a class="wtitle" href="astrobloom/astrobloom.html"><span class="prefix">::zenobotanis.</span>Astrobloom</a>
+            <div class="crumb reveal"><a href="../../index.html">bzs42</a>::artwork</div>
+            <a class="wtitle reveal" href="astrobloom/astrobloom.html"><span class="prefix">::zenobotanis.</span>Astrobloom</a>
         </div>
-        <a class="shotlink" href="astrobloom/astrobloom.html">
+        <a class="shotlink reveal" href="astrobloom/astrobloom.html">
             <img class="shot" src="astrobloom/P_20260501_190841_1290.webp" alt="::zenobotanis.Astrobloom" />
             <span class="viewcue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
         </a>
-        <div class="desc">
+        <div class="desc reveal">
             <p class="tagline">Astrobloom — Signale aus dem Regolith</p>
             <p class="material">
                 <span class="lbl">Material:</span>
@@ -314,34 +311,37 @@
     </section>
 
     <button class="navdot" id="scrollInd" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+        <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span>
     </button>
 
     <script>
-        // Beim Eintreten einer Section in den Viewport die Einlauf-Animation
-        // auslösen (Kopf hoch, Titel runter, je zurück). Klasse beim Verlassen
-        // entfernen, damit der Effekt bei erneutem Eintreten neu spielt.
         const works = Array.from(document.querySelectorAll(".work"));
         const ind = document.getElementById("scrollInd");
         let current = 0;
 
+        function reveal(work, on) {
+            work.querySelectorAll(".reveal").forEach(function (el) {
+                el.classList.toggle("in", on);
+            });
+        }
+
+        reveal(works[0], true);
+
         const io = new IntersectionObserver(function (entries) {
             entries.forEach(function (e) {
-                e.target.classList.toggle("in", e.isIntersecting);
+                reveal(e.target, e.isIntersecting);
                 if (e.isIntersecting) {
                     current = works.indexOf(e.target);
                     ind.classList.toggle("up", current === works.length - 1);
                 }
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 0, rootMargin: "-40% 0px -40% 0px" });
 
-        works.forEach(function (s) { io.observe(s); });
+        works.forEach(function (w) { io.observe(w); });
 
-        // Tap auf den Indikator: zur nächsten Section bzw. (auf der letzten)
-        // zurück nach ganz oben.
         ind.addEventListener("click", function () {
             const target = current >= works.length - 1 ? works[0] : works[current + 1];
-            target.scrollIntoView({ behavior: "smooth" });
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
         });
     </script>
 </body>
