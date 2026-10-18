@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>bzs42::artwork — 50 Shades of Purple · Detail</title>
+    <style>
+        /* --- 1. VARIABLEN & RESET ---
+           Werk-eigene Palette: Lila-Spektrum (Vorderseite = bearbeitetes Werk),
+           Grautöne (Rückseite = unbearbeitete Originalaufnahme). --shade / --grey
+           werden je aktivem Werk per JS gesetzt; die Breadcrumb bleibt Amber. */
+        :root {
+            --text: #fffaf4;
+            --accent: #ffb900;
+            /* aktive Hintergründe (per JS je Werk gesetzt) */
+            --shade: #12061f;
+            --grey: #0f0f11;
+            --title-purple: #d3b3ff;
+            --title-grey: #cfccc9;
+            --tilt: 1.5deg;
+            --flip-speed: 0.8s;
+            --scheme-speed: 0.8s;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: 100%;
+            /* gekippte Sektionen ragen seitlich minimal über -> kein
+               horizontaler Scrollbalken */
+            overflow-x: hidden;
+        }
+
+        body {
+            min-height: 100%;
+            color: var(--text);
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background: var(--shade);
+            transition: background var(--scheme-speed) ease;
+            /* 10px Safe-Area rundum (fixe/abspos Kinder bekommen ihren eigenen
+               10px-Inset, da body-padding sie nicht verschiebt). */
+            padding: 10px;
+        }
+
+        /* Rückseite (geflippt): Schema wechselt auf Grautöne. */
+        body.flipped {
+            background: var(--grey);
+        }
+
+        /* --- 2. BREADCRUMB (fixe Ecke, immer erreichbar) --- */
+        header {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 30;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .crumbs {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .crumbs a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .crumbs a:hover {
+            color: var(--text);
+        }
+
+        .piece {
+            font-size: 2.1rem;
+            font-weight: 600;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .piece a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .piece a:hover {
+            color: var(--accent);
+        }
+
+        /* Farbbalken links: 8 Streifen = 8 Werke (oben -> unten), liegt unter
+           allem; zeigt geflippt die Grautöne, das aktive Werk trägt eine
+           Amber-Kante ganz links. Bewusst randlos (ohne 10px-Inset), da nur
+           Dekor ohne klickbare Inhalte. Farben (--c / --g) setzt das JS. */
+        .shades {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 10vw;
+            display: flex;
+            flex-direction: column;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shades i {
+            flex: 1 1 0;
+            background: var(--c);
+            transition: background var(--scheme-speed) ease, box-shadow 0.3s ease;
+        }
+
+        body.flipped .shades i {
+            background: var(--g);
+        }
+
+        .shades i.on {
+            box-shadow: inset 4px 0 0 var(--accent);
+        }
+
+        /* --- 3. FIXES BILD LINKS (bleibt beim Scrollen am selben Platz) --- */
+        .viewer {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            bottom: 10px;
+            width: 46vw;
+            display: flex;
+            align-items: center;
+            /* Bild an den rechten Rand der Spalte rücken, damit es nah am Text
+               sitzt (Abstand bleibt so unabhängig von der Bildgröße konstant). */
+            justify-content: flex-end;
+            padding-right: 1.5vw;
+            z-index: 2;
+            /* leere Viewer-Fläche soll keine Klicks/Textauswahl blockieren */
+            pointer-events: none;
+            /* Tilt: lehnt je aktivem Werk leicht nach links/rechts. */
+            transition: transform var(--scheme-speed) ease;
+        }
+
+        /* Quadrat, gedeckelt auf 956px -> keine Vergrößerung über die Quelle
+           hinaus auf 4K (dpr=1 => 1 CSS-px = 1 Geräte-px). Trägt die Perspektive
+           und das Hinweis-Icon; flippt selbst NICHT (nur die .card darin). */
+        .stage {
+            position: relative;
+            width: min(956px, 44vw, 82vh);
+            aspect-ratio: 1 / 1;
+            perspective: 1600px;
+            transform-style: preserve-3d;
+        }
+
+        .card {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            /* Viewer ist pointer-events:none -> Card wieder klickbar machen */
+            pointer-events: auto;
+            transform-style: preserve-3d;
+            transition: transform var(--flip-speed) ease;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+        }
+
+        .face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .face.back {
+            transform: rotateY(180deg);
+        }
+
+        /* Hinweis-Icon wie im Mobile-Viewcue (Amber, umrandet, leicht größer).
+           pointer-events: none -> Klick geht durch zur darunterliegenden .card. */
+        .flipcue {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            z-index: 3;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px;
+            color: var(--accent);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+            transition: opacity 0.18s ease;
+        }
+
+        /* Werk ohne Originalaufnahme: kein Flip, kein Hinweis-Icon */
+        .stage.noflip .card {
+            cursor: default;
+        }
+
+        .stage.noflip .flipcue {
+            display: none;
+        }
+
+        /* während des Flips (Card transformiert) ausblenden */
+        .stage.flipping .flipcue {
+            opacity: 0;
+        }
+
+        .flipcue svg {
+            display: block;
+        }
+
+        /* --- 4. TEXT RECHTS (scrollt) --- */
+        .content {
+            position: relative;
+            z-index: 1;
+            /* bündig mit dem fixen Viewer (46vw ab Fensterrand, body-padding
+               abgezogen); keine feste Breite, damit ein Scrollbalken nicht
+               zu horizontalem Überlauf führt. Rechter Rand kommt vom body. */
+            margin-left: calc(46vw - 10px);
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* wenig Abstand links (nah ans Bild), mehr rechts für Lesbarkeit */
+            padding: 8vh 5vw 8vh 1.5vw;
+            transition: transform 0.6s ease;
+        }
+
+        /* abwechselnde Schräglage (Crooked Mode); der Bild-Viewer wird per JS
+           passend dazu in dieselbe Richtung gekippt. */
+        section:nth-child(odd) {
+            transform: rotate(var(--tilt));
+        }
+
+        section:nth-child(even) {
+            transform: rotate(calc(-1 * var(--tilt)));
+        }
+
+        .work-title {
+            font-size: clamp(2rem, 7vh, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--title-purple);
+            transition: color var(--scheme-speed) ease;
+        }
+
+        body.flipped .work-title {
+            color: var(--title-grey);
+        }
+
+        .work-title .num {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+
+        .desc {
+            margin-top: 1.6rem;
+            font-size: clamp(1rem, 2.2vh, 1.35rem);
+            line-height: 1.7;
+            max-width: 46ch;
+            opacity: 0.92;
+        }
+
+        .desc.back {
+            display: none;
+        }
+
+        body.flipped .desc.front {
+            display: none;
+        }
+
+        body.flipped .desc.back {
+            display: block;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-bottom: 0.6rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="shades" id="shades"></div>
+
+    <header>
+        <nav class="crumbs"><a href="../../../../index.html">bzs42</a>::<a href="../../index.html">artwork</a></nav>
+        <div class="piece">.<a href="../50shades.html">50 Shades of Purple - Light Fever</a></div>
+    </header>
+
+    <div class="viewer">
+        <div class="stage">
+            <div class="card" id="card">
+                <div class="face front"><img id="imgFront" alt="" /></div>
+                <div class="face back"><img id="imgBack" alt="" /></div>
+            </div>
+            <!-- Flip-Hinweis-Icon (horizontaler Flip, passend zur rotateY-
+                 Drehung): liegt außerhalb der .card, dreht sich also nicht mit
+                 und bleibt an Ort und Stelle; während des Flips ausgeblendet. -->
+            <span class="flipcue"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></span>
+        </div>
+    </div>
+
+    <main class="content" id="content"></main>
+
+    <script>
+        // --- Werkdaten: Vorderseite = bearbeitetes Werk (Lila), Rückseite =
+        //     unbearbeitete Originalaufnahme (Grau). frontDesc / backDesc
+        //     sind HTML.
+        //     Ohne back (kein Original) ist das Werk nicht flipbar.
+        //     shade = Lila-Hintergrund, grey = Grau-Hintergrund des
+        //     jeweiligen Werks. ---
+        const WORKS = [
+            {
+                title: "Ego Zentrifuge",
+                front: "20240315_163053_edited_956.webp",
+                back: "20240315_163053_956.webp",
+                shade: "#12061f", grey: "#0f0f11",
+                frontDesc: "Beim Blick in den Spiegel ist das eigene Ich nicht mehr zu verorten. " +
+                    "Überall erscheinen ständige Wiederholungen des eigenen Körpers. Die eigene " +
+                    "Gestalt lässt sich nicht länger als eine feste Person begreifen, sondern " +
+                    "gleicht einem durch Fliehkräfte in alle Richtungen vervielfältigten und " +
+                    "durcheinandergewirbelten Mosaik. Aus dem „Ich“ werden bloße Farbkleckse auf " +
+                    "der Palette von Vincent van Gogh.",
+                backDesc: "Spiegelraum in der immersiven Vincent-van-Gogh-Ausstellung"
+            },
+            {
+                title: "Transzendieren",
+                front: "20240511_163443_edited_956.webp",
+                back: "20240511_163443_956.webp",
+                shade: "#250a40", grey: "#1c1c1f",
+                frontDesc: [
+                    "„Der Schacht ist der Pfad zur Transzendenz. Rolltreppe führt zu Erleuchtung, Erleuchtung führt zu Ticketkontrolle, Ticketkontrolle führt zu spirituellem Leid.“",
+                    "„Ich fahre Rolltreppe, also transzendiere ich.“",
+                    "„Und wenn du lange in die Röhre blickst, blickt die Röhre auch in dich hinein.“",
+                    "„Ich kann dir nur die Rolltreppe zeigen. Hinunterfahren musst du ganz allein.“",
+                    "„Das ist ein kleiner Tritt auf die Metallstufe, aber ein gewaltiger Sprung in die Tiefe.“"
+                ].join("<br><br>"),
+                backDesc: "Prag, U-Bahn"
+            },
+            {
+                title: "Interferenz",
+                front: "P_20250125_182638_edited_956.webp",
+                back: "P_20250125_182638_956.webp",
+                shade: "#3b0f63", grey: "#2a2a2e",
+                frontDesc: [
+                    "One evening someone knocked, AND I opened the door.",
+                    "The face was familiar, the voice was too, AND I knew it at once.",
+                    "We sat across the table, he waited, AND I waited.",
+                    "He knew every lie, AND I knew every excuse,",
+                    "He knew the fears I never named, AND I knew the courage he only pretended.",
+                    "He knew where I had hidden the letters, AND I knew why he never sent them.",
+                    "He remembered the night I almost left, AND I remembered why I stayed.",
+                    "He knew which songs still hurt, AND I knew which ones he always skipped.",
+                    "He finished my sentences, AND I finished his silences.",
+                    "He knew the name of my first love, AND I knew the name of his last regret.",
+                    "By morning he was gone",
+                    "Only one cup remained on the table,",
+                    "his or mine,",
+                    "ANDI AND I."
+                ].join("<br>"),
+                backDesc: "Ich und Andi in der Küche"
+            },
+            {
+                title: "Lichtstrom",
+                front: "P_20250703_000143_edited_956.webp",
+                back: "P_20250703_000143_956.webp",
+                shade: "#561487", grey: "#39393d",
+                frontDesc: "An diesem Abend waren es auf dem Heimweg noch 27 Grad, dazu ein " +
+                    "leichter, warmer Wind. Es war einer dieser Sommerabende, an denen die Zeit " +
+                    "stillsteht. Ich zog ohne Ziel durch die Straßen, spielte mit der Kamera und " +
+                    "machte aus Lichtern Linien und Kreise.",
+                backDesc: "Baustelle"
+            },
+            {
+                title: "Night Drift",
+                front: "PSX_20250918_220054_1_956.webp",
+                frontDesc: "„Im Licht der Laternen gleiten sie durch die Straßen, schwerelos, " +
+                    "als schwebten sie durch die Wolken.“",
+                shade: "#7419a8", grey: "#4a4a4e"
+            },
+            {
+                title: "Sonnensturm",
+                front: "P_20250823_211758_edited_croped_956.webp",
+                back: "P_20250823_211758_956.webp",
+                frontDesc: "Das Universum ist ein Maler, und die Sonne ist seine Palette. Bei jeder " +
+                    "Eruption taucht er den Pinsel in glühendes Plasma und schleudert es in die Weite " +
+                    "des Alls. Das Magnetfeld der Erde führt seine Hand und lenkt jeden Strich zu den " +
+                    "Polen, wo der Himmel als Leinwand bereitliegt. Dort entfalten sich die Farben: " +
+                    "Sauerstoff leuchtet in mittleren Höhen grün, in den oberen Schichten tiefrot, " +
+                    "Stickstoff fügt Violett und Blau hinzu. So entsteht in kalten Nächten ein Gemälde, " +
+                    "das sich ständig wandelt und niemals zweimal gleich ist.",
+                backDesc: "Nachts, 5 °C im August, Großbreitenbach in Thüringen<br>Frisbee mit LED",
+                shade: "#5a148c", grey: "#3f3f43"
+            },
+            {
+                title: "Multiversum",
+                front: "P_20251220_111434_edited_956.webp",
+                back: "P_20251220_111434_956.webp",
+                frontDesc: "Nach der Viele-Welten-Interpretation der Quantenmechanik spaltet sich das " +
+                    "Universum bei jeder Entscheidung in parallele Wirklichkeiten auf. Gewöhnlich " +
+                    "bleiben diese Welten füreinander unsichtbar, doch an manchen Orten scheinen sie " +
+                    "einander zu berühren. Ein Windhauch genügt, um zwei Welten zu offenbaren. Die " +
+                    "Wasseroberfläche wird zum Portal zwischen den Wirklichkeiten, und ein Sprung ins " +
+                    "Wasser zum Sprung durch die Welten.",
+                backDesc: "Bremen, Stadtgraben",
+                shade: "#3d0f66", grey: "#2d2d31"
+            },
+            {
+                title: "Supernova",
+                front: "P_20251231_235720_edited_956.webp",
+                back: "P_20251231_235720_956.webp",
+                frontDesc: "Ein letzter Atemzug aus Licht, ein Ende, das in Funken zerbricht, und " +
+                    "mitten darin entzündet sich der erste Moment von etwas Neuem.",
+                backDesc: "Neujahr",
+                shade: "#1d0833", grey: "#18181b"
+            }
+        ];
+
+        const content = document.getElementById("content");
+        const shades = document.getElementById("shades");
+        const card = document.getElementById("card");
+        const imgFront = document.getElementById("imgFront");
+        const imgBack = document.getElementById("imgBack");
+        const viewer = document.querySelector(".viewer");
+        const stage = document.querySelector(".stage");
+        const root = document.documentElement;
+        const body = document.body;
+
+        // Sektionen (eine je Werk) aus den Daten aufbauen.
+        WORKS.forEach(function (w, i) {
+            const sec = document.createElement("section");
+            sec.id = "work" + (i + 1);
+            sec.dataset.idx = i;
+            sec.innerHTML =
+                '<h2 class="work-title"><span class="num">Light Fever · ' +
+                String(i + 1).padStart(2, "0") + ' / ' + String(WORKS.length).padStart(2, "0") +
+                '</span>' + w.title + '</h2>' +
+                '<p class="desc front">' + w.frontDesc + '</p>' +
+                (w.back ? '<p class="desc back"><span class="tag">original</span><br>' + w.backDesc + '</p>' : '');
+            content.appendChild(sec);
+
+            const stripe = document.createElement("i");
+            stripe.style.setProperty("--c", w.shade);
+            stripe.style.setProperty("--g", w.grey);
+            shades.appendChild(stripe);
+        });
+
+        let active = -1;
+
+        // Setzt das aktive Werk: Bilder tauschen, Flip zurücksetzen, Schema-
+        // Farben (Lila/Grau) und Schräglage je Parität anwenden.
+        function setActive(i) {
+            if (i === active) return;
+            if (active >= 0) shades.children[active].classList.remove("on");
+            shades.children[i].classList.add("on");
+            active = i;
+            const w = WORKS[i];
+            imgFront.src = w.front;
+            imgFront.alt = w.title + " — bearbeitet";
+            imgBack.src = w.back || "";
+            imgBack.alt = w.back ? w.title + " — Originalaufnahme" : "";
+            stage.classList.toggle("noflip", !w.back);
+            // beim Werkwechsel zurück auf die Vorderseite (Lila)
+            card.classList.remove("flipped");
+            body.classList.remove("flipped");
+            root.style.setProperty("--shade", w.shade);
+            root.style.setProperty("--grey", w.grey);
+            // Bild-Viewer in dieselbe Richtung kippen wie die Textsektion
+            // (odd -> +tilt, even -> -tilt).
+            const dir = (i % 2 === 0) ? 1 : -1;
+            viewer.style.transform = "rotate(calc(" + dir + " * var(--tilt)))";
+        }
+
+        // Klick aufs Bild: 3D-Flip + Beschreibung + Schema (Lila <-> Grau).
+        card.addEventListener("click", function () {
+            if (!WORKS[active].back) return;
+            const flipped = card.classList.toggle("flipped");
+            body.classList.toggle("flipped", flipped);
+        });
+
+        // Während die Card-Drehung (transform) läuft, das Hinweis-Icon
+        // ausblenden — gilt für Klick-Flip wie auch fürs Zurücksetzen.
+        card.addEventListener("transitionstart", function (e) {
+            if (e.propertyName === "transform") stage.classList.add("flipping");
+        });
+        function endFlip(e) {
+            if (e.propertyName === "transform") stage.classList.remove("flipping");
+        }
+        card.addEventListener("transitionend", endFlip);
+        card.addEventListener("transitioncancel", endFlip);
+
+        // Aktives Werk = jene Sektion, die die Bildschirmmitte überdeckt.
+        const io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) setActive(+e.target.dataset.idx);
+            });
+        }, { rootMargin: "-50% 0px -50% 0px", threshold: 0 });
+
+        Array.prototype.forEach.call(content.children, function (sec) {
+            io.observe(sec);
+        });
+
+        // Einstieg per Anker (#workN) — sonst beim ersten Werk.
+        function initFromHash() {
+            const id = (location.hash || "").slice(1);
+            const target = id ? document.getElementById(id) : null;
+            const i = target ? +target.dataset.idx : 0;
+            setActive(i);
+            if (target) target.scrollIntoView({ behavior: "auto", block: "start" });
+        }
+
+        window.addEventListener("hashchange", initFromHash);
+        initFromHash();
+    </script>
+</body>
+
+</html>

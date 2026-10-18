@@ -2,9 +2,14 @@
 #
 # embed-copyright.sh
 #
-# Schreibt Urheber-/Copyright-Metadaten (EXIF, IPTC, XMP) in ALLE Bilder im
-# Repository. Idempotent und beliebig wiederholbar — bei neuen Bildern einfach
-# erneut ausführen; bestehende Felder werden überschrieben/aktualisiert.
+# Entfernt zuerst ALLE vorhandenen Metadaten (Kamera, GPS, Aufnahmezeit,
+# Software, Drehungs-Tag …; nur das ICC-Farbprofil bleibt) und schreibt dann
+# Urheber-/Copyright-Metadaten (EXIF, IPTC, XMP) in ALLE Bilder im Repository.
+# Idempotent und beliebig wiederholbar — bei neuen Bildern einfach erneut
+# ausführen.
+#
+# Achtung Drehung: Ein EXIF-Orientation-Tag geht dabei verloren. Neue Bilder
+# daher vorher mit `magick … -auto-orient` in die richtige Lage bringen.
 #
 #   Aufruf:  ./scripts/embed-copyright.sh            # alle Bilder im Repo
 #            ./scripts/embed-copyright.sh -n         # Probelauf (nur anzeigen)
@@ -84,10 +89,14 @@ if [[ $DRY_RUN -eq 1 ]]; then
 fi
 
 # Metadaten schreiben. -overwrite_original: keine *_original-Sicherungen
-# (Git ist die Sicherung). Wir schreiben EXIF, IPTC und XMP parallel, damit
-# möglichst viele Programme die Angaben lesen.
+# (Git ist die Sicherung). -all= löscht alles Vorhandene, --icc_profile:all
+# behält das Farbprofil; die folgenden Zuweisungen werden danach geschrieben.
+# Wir schreiben EXIF, IPTC und XMP parallel, damit möglichst viele Programme
+# die Angaben lesen.
 exiftool \
     -overwrite_original \
+    -all= \
+    --icc_profile:all \
     -codedcharacterset=utf8 \
     -EXIF:Artist="$ARTIST" \
     -EXIF:Copyright="$COPYRIGHT" \
@@ -102,4 +111,4 @@ exiftool \
     -XMP-photoshop:Credit="$ARTIST" \
     "${FILES[@]}"
 
-echo "Fertig. Copyright-Metadaten in ${#FILES[@]} Bild(ern) aktualisiert."
+echo "Fertig. Metadaten entfernt und Copyright in ${#FILES[@]} Bild(ern) geschrieben."

@@ -93,6 +93,19 @@
             min-height: 0;
         }
 
+        /* Bild + Titel sind ein Link zur Detailseite (springt zum Werk).
+           Der Link umschließt die figure (figcaption muss direktes Kind der
+           figure bleiben) und übernimmt deren Flex-Rolle in der Zeile. */
+        a.cell {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+            text-decoration: none;
+            color: inherit;
+        }
+
         figure {
             flex: 1 1 0;
             display: flex;
@@ -145,40 +158,56 @@
 
     <div class="gallery">
         <div class="gallery-row">
-            <figure>
-                <figcaption>Immersive Ego Zentrifuge</figcaption>
-                <img src="20240315_163053_edited_956.webp" alt="Light Fever — 15.03.2024" />
-            </figure>
-            <figure>
-                <figcaption>Transit</figcaption>
-                <img src="20240511_163443_edited_956.webp" alt="Light Fever — 11.05.2024" />
-            </figure>
-            <figure>
-                <figcaption>Interferenz</figcaption>
-                <img src="P_20250125_182638_edited_956.webp" alt="Light Fever — 25.01.2025" />
-            </figure>
-            <figure>
-                <figcaption>Lichtstrom</figcaption>
-                <img src="P_20250703_000143_edited_956.webp" alt="Light Fever — 03.07.2025" />
-            </figure>
+            <a class="cell" href="detail/index.html#work1">
+                <figure>
+                    <figcaption>Ego Zentrifuge</figcaption>
+                    <img src="20240315_163053_edited_956.webp" alt="Light Fever — Ego Zentrifuge" />
+                </figure>
+            </a>
+            <a class="cell" href="detail/index.html#work2">
+                <figure>
+                    <figcaption>Transzendieren</figcaption>
+                    <img src="20240511_163443_edited_956.webp" alt="Light Fever — Transzendieren" />
+                </figure>
+            </a>
+            <a class="cell" href="detail/index.html#work3">
+                <figure>
+                    <figcaption>Interferenz</figcaption>
+                    <img src="P_20250125_182638_edited_956.webp" alt="Light Fever — Interferenz" />
+                </figure>
+            </a>
+            <a class="cell" href="detail/index.html#work4">
+                <figure>
+                    <figcaption>Lichtstrom</figcaption>
+                    <img src="P_20250703_000143_edited_956.webp" alt="Light Fever — Lichtstrom" />
+                </figure>
+            </a>
         </div>
         <div class="gallery-row">
-            <figure>
-                <img src="PSX_20250918_220054_1_956.webp" alt="Light Fever — 18.09.2025" />
-                <figcaption>Ekstase</figcaption>
-            </figure>
-            <figure>
-                <img src="P_20250823_211758_edited_956.webp" alt="Light Fever — 23.08.2025" />
-                <figcaption>Orbit</figcaption>
-            </figure>
-            <figure>
-                <img src="P_20251220_111434_edited_956.webp" alt="Light Fever — 20.12.2025" />
-                <figcaption>Inversion</figcaption>
-            </figure>
-            <figure>
-                <img src="P_20251231_235720_edited_956.webp" alt="Light Fever — 31.12.2025" />
-                <figcaption>Supernova</figcaption>
-            </figure>
+            <a class="cell" href="detail/index.html#work5">
+                <figure>
+                    <img src="PSX_20250918_220054_1_956.webp" alt="Light Fever — Night Drift" />
+                    <figcaption>Night Drift</figcaption>
+                </figure>
+            </a>
+            <a class="cell" href="detail/index.html#work6">
+                <figure>
+                    <img src="P_20250823_211758_edited_croped_956.webp" alt="Light Fever — Sonnensturm" />
+                    <figcaption>Sonnensturm</figcaption>
+                </figure>
+            </a>
+            <a class="cell" href="detail/index.html#work7">
+                <figure>
+                    <img src="P_20251220_111434_edited_956.webp" alt="Light Fever — Multiversum" />
+                    <figcaption>Multiversum</figcaption>
+                </figure>
+            </a>
+            <a class="cell" href="detail/index.html#work8">
+                <figure>
+                    <img src="P_20251231_235720_edited_956.webp" alt="Light Fever — Supernova" />
+                    <figcaption>Supernova</figcaption>
+                </figure>
+            </a>
         </div>
     </div>
 
